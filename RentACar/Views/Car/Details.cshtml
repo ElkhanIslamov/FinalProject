@@ -1,0 +1,139 @@
+﻿@model RentACar.Models.CarDetailsViewModel
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Car Details";
+    var isAuthenticated = HttpContextAccessor.HttpContext?.User.Identity?.IsAuthenticated ?? false;
+    var bookUrl = isAuthenticated
+        ? Url.Action("QuickBooking", "Booking")
+        : Url.Action("Login", "Account");
+    var whatsappMessage = $"Salam, {Model.Name} maşını ilə bağlı məlumat almaq istəyirəm.";
+    var whatsappUrl = "https://wa.me/994559999076?text=" + Uri.EscapeDataString(whatsappMessage);
+}
+
+<!-- Owl Carousel və Lightbox üçün style-lar -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/css/lightbox.min.css" />
+
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <!-- subheader -->
+    <section id="subheader" class="jarallax text-light">
+        <img src="images/background/2.jpg" class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>@Model.Name</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- car details section -->
+    <section id="section-car-details">
+        <div class="container">
+            <div class="row g-5">
+
+                <!-- Left side: Image Carousel -->
+                <div class="col-lg-6">
+                    <div id="slider-carousel" class="owl-carousel owl-theme mb-3">
+                        <!-- Main image -->
+                        <div class="item">
+                            <a href="@Url.Content("~/images/car/" + Model.ImageUrl)" data-lightbox="car-gallery">
+                                <img src="@Url.Content("~/images/car/" + Model.ImageUrl)" class="img-fluid rounded" alt="@Model.Name" />
+                            </a>
+                        </div>
+
+                        <!-- Additional images -->
+                        @foreach (var img in Model.AdditionalImageUrls)
+                        {
+                            <div class="item">
+                                <a href="@Url.Content("~/images/car/" + img)" data-lightbox="car-gallery">
+                                    <img src="@Url.Content("~/images/car/" + img)" class="img-fluid rounded" alt="@Model.Name" />
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <!-- Middle: Description and specs -->
+                <div class="col-lg-3">
+                    <h3>@Model.Name</h3>
+                    <p>@Model.Description</p>
+
+                    <div class="spacer-10"></div>
+                    <h4>Specifications</h4>
+                    <div class="de-spec">
+                        <div class="d-row">
+                            <span class="d-title">Bir günlük qiymət</span>
+                            <span class="d-value">₼@Model.PricePerDay</span>
+                        </div>
+                        <!-- Əlavə texniki göstəricilər bura əlavə oluna bilər -->
+                    </div>
+                </div>
+
+                <!-- Right side: Booking panel -->
+                <div class="col-lg-3">
+                    <div class="de-price text-center">
+                        Daily rate
+                        <h3>₼@Model.PricePerDay</h3>
+                    </div>
+
+                    <div class="spacer-30"></div>
+
+                    <div class="de-box text-light mb25">
+                        <h4>Booking this car</h4>
+                        <div class="spacer-20"></div>
+
+                        <div class="col-lg-12 mb20">
+                            <a href="@bookUrl" class="btn-main btn-fullwidth text-center d-block">Book Now</a>
+                        </div>
+
+                        <div class="col-lg-12 mb20">
+                            <a href="@whatsappUrl" target="_blank" class="btn-main btn-fullwidth text-center d-block">WhatsApp</a>
+                        </div>
+                    </div>
+
+                    <div class="de-box">
+                        <h4>Share</h4>
+                        <div class="de-color-icons">
+                            <span><i class="fa fa-twitter fa-lg"></i></span>
+                            <span><i class="fa fa-facebook fa-lg"></i></span>
+                            <span><i class="fa fa-whatsapp fa-lg"></i></span>
+                            <span><i class="fa fa-envelope fa-lg"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<a href="#" id="back-to-top"></a>
+
+<!-- Owl Carousel and Lightbox scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        $('#slider-carousel').owlCarousel({
+            items: 1,
+            loop: true,
+            margin: 10,
+            nav: true,
+            dots: true
+        });
+
+        lightbox.option({
+            resizeDuration: 200,
+            wrapAround: true,
+            albumLabel: "Şəkil %1 / %2"
+        });
+    });
+</script>

@@ -1,0 +1,73 @@
+﻿@model RentACar.Areas.Admin.Models.CarDetailsViewModel
+
+@{
+    ViewData["Title"] = "Avtomobilin Təfərrüatları";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="form-group">
+    <label>Adı:</label>
+    <input class="form-control" value="@Model.Name" disabled />
+</div>
+
+<div class="form-group">
+    <label>Əsas Şəkil:</label><br />
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="~/images/car/@Model.ImageUrl" alt="Car Image" style="width: 250px;" />
+    }
+    else
+    {
+        <p class="text-muted">Şəkil mövcud deyil</p>
+    }
+</div>
+
+<div class="form-group">
+    <label>Oturacaqlar (Seats):</label>
+    <input class="form-control" value="@Model.Seats" disabled />
+</div>
+
+<div class="form-group">
+    <label>Qapılar (Doors):</label>
+    <input class="form-control" value="@Model.Doors" disabled />
+</div>
+
+<div class="form-group">
+    <label>Bağlamaq üçün yer (Luggage):</label>
+    <input class="form-control" value="@Model.Luggage" disabled />
+</div>
+
+<div class="form-group">
+    <label>Günlük Qiymət (₼):</label>
+    <input class="form-control" value="@Model.PricePerDay.ToString("N2")" disabled />
+</div>
+
+<div class="form-group">
+    <label>Kateqoriya:</label>
+    <input class="form-control" value="@Model.CategoryName" disabled />
+</div>
+
+<div class="form-group">
+    <label>Əlavə Şəkillər:</label>
+    <div>
+        @if (Model.GalleryImages != null && Model.GalleryImages.Any())
+        {
+            foreach (var img in Model.GalleryImages)
+            {
+                <img src="~/images/car/@img" alt="Additional Image" style="max-height: 100px; margin-right:10px;" />
+            }
+        }
+        else
+        {
+            <p class="text-muted">Əlavə şəkil yoxdur</p>
+        }
+    </div>
+</div>
+
+<div class="form-group">
+    <label>Təsvir (Description):</label>
+    <textarea class="form-control" rows="5" disabled>@Model.Description</textarea>
+</div>
+
+<a asp-action="Index" class="btn btn-secondary">Geri</a>

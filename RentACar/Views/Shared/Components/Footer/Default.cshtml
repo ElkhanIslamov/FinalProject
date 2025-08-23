@@ -1,0 +1,96 @@
+﻿@model RentACar.Areas.Admin.Models.FooterInfoViewModel
+
+<footer class="text-light">
+    <div class="container">
+        <div class="row g-custom-x">
+            <div class="col-lg-3">
+                <div class="widget">
+                    <h5>About Rentaly</h5>
+                    <p>@Model.AboutText</p>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="widget">
+                    <h5>Contact Info</h5>
+                    <address class="s1">
+                        <span><i class="id-color fa fa-map-marker fa-lg"></i>@Model.Address</span>
+                        <span><i class="id-color fa fa-phone fa-lg"></i>@Model.Phone</span>
+                        <span><i class="id-color fa fa-envelope-o fa-lg"></i><a href="mailto:@Model.Email">@Model.Email</a></span>
+                     </address>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <h5>Quick Links</h5>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="widget">
+                            <ul>
+                                @if (Model.FooterLinks != null && Model.FooterLinks.Any())
+                                {
+                                    foreach (var link in Model.FooterLinks)
+                                    {
+                                        <li><a href="@link.Url">@link.Title</a></li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>No links available</li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3">
+                <div class="widget">
+                    <h5>Social Network</h5>
+                    <div class="social-icons">
+                        @if (!string.IsNullOrEmpty(Model.FacebookUrl))
+                        {
+                            <a href="@Model.FacebookUrl"><i class="fa fa-facebook fa-lg"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.TwitterUrl))
+                        {
+                            <a href="@Model.TwitterUrl"><i class="fa fa-twitter fa-lg"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.LinkedInUrl))
+                        {
+                            <a href="@Model.LinkedInUrl"><i class="fa fa-linkedin fa-lg"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.PinterestUrl))
+                        {
+                            <a href="@Model.PinterestUrl"><i class="fa fa-pinterest fa-lg"></i></a>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.RssUrl))
+                        {
+                            <a href="@Model.RssUrl"><i class="fa fa-rss fa-lg"></i></a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="subfooter">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="de-flex">
+                        <div class="de-flex-col">
+                            <a href="~/index.html">
+                                Copyright 2025 - Rentaly by Designesia
+                            </a>
+                        </div>
+                        <ul class="menu-simple">
+                            <li><a href="~/#">Terms &amp; Conditions</a></li>
+                            <li><a href="~/#">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

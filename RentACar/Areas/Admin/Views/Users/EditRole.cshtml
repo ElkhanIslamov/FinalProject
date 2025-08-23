@@ -1,0 +1,56 @@
+﻿@model RentACar.Areas.Admin.Models.EditUserRoleViewModel
+
+@{
+    ViewData["Title"] = "Rolu Dəyiş";
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="row">
+    <div class="col-lg-6 offset-lg-3 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">İstifadəçi: @Model.FullName</h4>
+
+                <form asp-action="EditRole" method="post">
+                    <input type="hidden" name="userId" value="@Model.UserId" />
+
+                    <div class="form-group">
+                        <label>Mövcud rol(l)ar:</label><br />
+                        @if (Model.CurrentRoles.Any())
+                        {
+                            @foreach (var role in Model.CurrentRoles)
+                            {
+                                <span class="badge badge-info">@role</span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="badge badge-secondary">Rol təyin edilməyib</span>
+                        }
+                    </div>
+
+                    <div class="form-group">
+                        <label>Yeni rol seç:</label>
+                        <select name="selectedRole" class="form-control">
+                            @foreach (var role in Model.AllRoles)
+                            {
+                                <option value="@role" selected="@(Model.CurrentRoles.Contains(role) ? "selected" : null)">
+                                    @role
+                                </option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="form-group d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="mdi mdi-arrow-left"></i> Geri
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="mdi mdi-check"></i> Yadda saxla
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿@model RentACar.DataContext.Entities.HomeFaq
+
+<h2>FAQ Əlavə Et</h2>
+
+<form asp-action="Create" method="post">
+
+    <div class="form-group">
+        <label>Başlıq</label>
+        <textarea asp-for="FaqText" class="form-control"></textarea>
+        <span asp-validation-for="FaqText" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Sual</label>
+        <input asp-for="Question" class="form-control" />
+        <span asp-validation-for="Question" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Cavab</label>
+        <textarea asp-for="Answer" class="form-control"></textarea>
+        <span asp-validation-for="Answer" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Yadda saxla</button>
+    <a asp-action="Index" class="btn btn-secondary">Geri</a>
+</form>

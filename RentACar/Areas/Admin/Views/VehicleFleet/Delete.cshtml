@@ -1,0 +1,18 @@
+﻿@model RentACar.Areas.Admin.Models.VehicleFleetViewModel
+
+@{
+    ViewData["Title"] = "Delete Vehicle Fleet Setting";
+}
+
+<h2>Bu məlumatı silmək istədiyinizə əminsiniz?</h2>
+
+<div>
+    <h4>@Model.Title</h4>
+    <p>@Model.Description</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">Ləğv et</a>
+</form>

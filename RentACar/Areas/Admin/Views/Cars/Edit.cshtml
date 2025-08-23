@@ -1,0 +1,137 @@
+﻿@model RentACar.Areas.Admin.Models.CarEditViewModel
+
+@{
+    ViewData["Title"] = "Avtomobili Redaktə Et";
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label asp-for="Name"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Seats"></label>
+        <input asp-for="Seats" type="number" class="form-control" />
+        <span asp-validation-for="Seats" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Doors"></label>
+        <input asp-for="Doors" type="number" class="form-control" />
+        <span asp-validation-for="Doors" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Luggage"></label>
+        <input asp-for="Luggage" type="number" class="form-control" />
+        <span asp-validation-for="Luggage" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="PricePerDay"></label>
+        <input asp-for="PricePerDay" type="number" step="0.01" class="form-control" />
+        <span asp-validation-for="PricePerDay" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CategoryId"></label>
+        <select asp-for="CategoryId" asp-items="Model.Categories" class="form-control"></select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+
+    <!-- Mövcud Əsas Şəkil -->
+    <div class="form-group">
+        <label>Əsas Şəkil (Hazırkı)</label><br />
+        @if (!string.IsNullOrEmpty(Model.ImageUrl))
+        {
+            <img src="~/images/car/@Model.ImageUrl" alt="Car Image" style="max-height: 150px;" class="mb-2" />
+        }
+        else
+        {
+            <p class="text-muted">Əsas şəkil yoxdur</p>
+        }
+    </div>
+
+    <div class="form-group">
+        <label asp-for="CoverImageFile">Yeni Əsas Şəkil Yüklə</label>
+        <input asp-for="CoverImageFile" type="file" class="form-control" />
+        <span asp-validation-for="CoverImageFile" class="text-danger"></span>
+    </div>
+
+    <!-- Mövcud Əlavə Şəkillər -->
+    <div class="form-group">
+        <label>Mövcud Əlavə Şəkillər</label>
+        <div class="row">
+            @if (Model.ExistingImages != null && Model.ExistingImages.Any())
+            {
+                foreach (var img in Model.ExistingImages)
+                {
+                    <div class="col-md-3 mb-2" style="position: relative;">
+                        <img src="~/images/car/@img.ImageUrl" alt="Additional Image" class="img-thumbnail" style="max-height: 100px; width: 100%; display: block;" />
+                        <button type="button"
+                                class="btn btn-danger btn-sm position-absolute delete-image-btn"
+                                data-imageid="@img.Id"
+                                style="border-radius:50%; width:24px; height:24px; padding:0; line-height:1; cursor:pointer; top: 4px; right: 4px;">
+                            ×
+                        </button>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="col-12 text-muted">Əlavə şəkil yoxdur</div>
+            }
+        </div>
+    </div>
+
+
+
+    <div class="form-group">
+        <label asp-for="ImageFiles">Yeni Əlavə Şəkillər Yüklə</label>
+        <input asp-for="ImageFiles" type="file" multiple class="form-control" />
+        <span asp-validation-for="ImageFiles" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Yadda saxla</button>
+    <a asp-action="Index" class="btn btn-secondary">Ləğv et</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.delete-image-btn').click(function () {
+                var btn = $(this);
+                var imageId = btn.data('imageid');
+
+                if (confirm('Bu şəkili silmək istədiyinizə əminsiniz?')) {
+                    $.ajax({
+                        url: '@Url.Action("DeleteImage", "Cars", new { area = "Admin" })/' + imageId,
+                        type: 'POST',
+                        success: function () {
+                            btn.closest('div.col-md-3').fadeOut(300, function () { $(this).remove(); });
+                        },
+                        error: function () {
+                            alert('Şəkil silinərkən xəta baş verdi.');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

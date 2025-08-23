@@ -1,0 +1,46 @@
+﻿@model List<RentACar.DataContext.Entities.Booking>
+@{
+    ViewData["Title"] = "Bookings";
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml"; // varsa admin layout
+}
+
+<h2 class="mb-4">All Bookings</h2>
+
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+        <tr>
+            <th>ID</th>
+            <th>Customer</th>
+            <th>Car</th>
+            <th>Pickup</th>
+            <th>Return</th>
+            <th>Status</th>
+            <th style="width: 220px;">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var booking in Model)
+        {
+            <tr>
+                <td>@booking.CustomerName</td>
+                <td>@booking.Car?.Name</td>
+                <td>@booking.Status</td>
+                <td>
+                    <!-- Burada form -->
+                    <form asp-action="UpdateStatus" asp-controller="Booking" method="post" asp-area="Admin">
+                        <input type="hidden" name="id" value="@booking.Id" />
+
+                        <select name="status" class="form-select d-inline w-auto">
+                            <option value="Pending" selected="@(booking.Status == "Pending")">Pending</option>
+                            <option value="Approved" selected="@(booking.Status == "Approved")">Approved</option>
+                            <option value="Rejected" selected="@(booking.Status == "Rejected")">Rejected</option>
+                        </select>
+
+                        <button type="submit" class="btn btn-sm btn-success ms-2">Yenilə</button>
+                    </form>
+                </td>
+            </tr>
+        }
+
+          </tbody>
+</table>

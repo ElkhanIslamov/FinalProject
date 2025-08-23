@@ -1,0 +1,45 @@
+﻿@model List<RentACar.DataContext.Entities.HomeHeroSection>
+
+@{
+    ViewData["Title"] = "Hero Sections";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Hero Sections</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Hero Əlavə Et</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Şəkil</th>
+            <th>Small Title</th>
+            <th>Main Title</th>
+            <th>Description</th>
+            <th>Əməliyyatlar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.BackgroundImageUrl))
+                    {
+                        <img src="@Url.Content(item.BackgroundImageUrl)" alt="Hero Image" width="150" height="80" style="object-fit:cover;" />
+                    }
+                </td>
+                <td>@item.SmallTitle</td>
+                <td>@item.MainTitle</td>
+                <td>@item.Description</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"
+                       onclick="return confirm('Silmək istədiyinizə əminsiniz?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

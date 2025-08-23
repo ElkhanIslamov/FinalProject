@@ -1,0 +1,37 @@
+﻿ @model IEnumerable<RentACar.DataContext.Entities.Category>
+@{
+    ViewData["Title"] = "Kateqoriyalar";
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Kateqoriya Siyahısı</h4>
+        <a asp-action="Create" class="btn btn-success mb-3">Yeni Kateqoriya</a>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Ad</th>
+                        <th>Əməliyyatlar</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm mr-5">Redaktə</a>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info btn-sm mr-5">Detallar</a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Sil</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

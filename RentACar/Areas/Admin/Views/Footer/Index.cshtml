@@ -1,0 +1,39 @@
+﻿@model IEnumerable<RentACar.DataContext.Entities.FooterInfo>
+
+@{
+    ViewData["Title"] = "Footer Siyahısı";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Footer Siyahısı</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Footer Əlavə Et</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>About</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Email</th>
+            <th>Əməliyyatlar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.AboutText</td>
+                <td>@item.Address</td>
+                <td>@item.Phone</td>
+                <td>@item.Email</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

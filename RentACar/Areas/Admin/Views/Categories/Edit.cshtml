@@ -1,0 +1,21 @@
+﻿ @model RentACar.DataContext.Entities.Category
+@{
+    ViewData["Title"] = "Kateqoriyanı Redaktə Et";
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Kateqoriyanı Redaktə Et</h4>
+        <form asp-action="Edit" method="post">
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Name"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-success">Yadda saxla</button>
+            <a asp-action="Index" class="btn btn-secondary">Geri</a>
+        </form>
+    </div>
+</div>

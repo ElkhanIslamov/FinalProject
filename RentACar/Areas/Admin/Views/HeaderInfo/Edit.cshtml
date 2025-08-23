@@ -1,0 +1,53 @@
+﻿@model RentACar.Areas.Admin.Models.HeaderInfoViewModel
+
+<form asp-action="@ViewContext.RouteData.Values["action"]" method="post">
+    <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Working Time</label>
+        <input asp-for="WorkingTime" type="datetime-local" class="form-control" />
+        <span asp-validation-for="WorkingTime" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Facebook URL</label>
+        <input asp-for="FacebookUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Twitter URL</label>
+        <input asp-for="TwitterUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Youtube URL</label>
+        <input asp-for="YoutubeUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Pinterest URL</label>
+        <input asp-for="PinterestUrl" class="form-control" />
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">Instagram URL</label>
+        <input asp-for="InstagramUrl" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,37 @@
+﻿@model HomeHeroSectionViewModel
+
+<h2>Hero Section redaktə et</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group">
+        <label>Small Title</label>
+        <input asp-for="SmallTitle" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Main Title</label>
+        <input asp-for="MainTitle" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label>Hazırki Şəkil</label><br />
+        @if (!string.IsNullOrEmpty(Model.BackgroundImageUrl))
+        {
+            <img src="@Model.BackgroundImageUrl" alt="Hero Image" width="200" />
+        }
+    </div>
+
+    <div class="form-group">
+        <label>Yeni Şəkil (əgər dəyişmək istəyirsənsə)</label>
+        <input asp-for="ImageFile" type="file" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Yadda saxla</button>
+</form>

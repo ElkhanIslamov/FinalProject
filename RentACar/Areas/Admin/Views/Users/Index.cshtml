@@ -1,0 +1,50 @@
+﻿@using RentACar.Areas.Admin.Models
+
+@model List<UserWithRolesViewModel>
+@{
+    ViewData["Title"] = "İstifadəçilər";
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">İstifadəçi siyahısı</h4>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>#</th>
+                        <th>Ad Soyad</th>
+                        <th>İstifadəçi adı</th>
+                        <th>Email</th>
+                        <th>Rol</th>
+                        <th>Əməliyyat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < Model.Count; i++)
+                    {
+                        var userVm = Model[i];
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@userVm.User.FullName</td>
+                            <td>@userVm.User.UserName</td>
+                            <td>@userVm.User.Email</td>
+                            <td>
+                                @foreach (var role in userVm.Roles)
+                                {
+                                    <span class="badge badge-info">@role</span>
+                                }
+                            </td>
+                            <td>
+                                <a asp-controller="users" asp-action="EditRole" asp-route-id="@userVm.User.Id" class="btn btn-warning btn-sm">
+                                    <i class="mdi mdi-account-edit"></i> Rolu dəyiş
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

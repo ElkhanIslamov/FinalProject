@@ -1,0 +1,197 @@
+﻿@model RentACar.Areas.Admin.Models.HeaderInfoViewModel
+
+<header class="transparent scroll-light has-topbar">
+    <!-- Topbar -->
+    <div id="topbar" class="topbar-dark text-light">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="topbar-left xs-hide d-flex">
+                <div class="topbar-widget me-3">
+                    <a href="tel:@Model.Phone"><i class="fa fa-phone"></i> @Model.Phone</a>
+                </div>
+                <div class="topbar-widget me-3">
+                    <a href="mailto:@Model.Email"><i class="fa fa-envelope"></i> @Model.Email</a>
+                </div>
+                <div class="topbar-widget">
+                    <i class="fa fa-clock-o"></i> @Model.WorkingTime.ToString("HH:mm")
+                </div>
+            </div>
+            <div class="topbar-right">
+                <div class="social-icons">
+                    @if (!string.IsNullOrWhiteSpace(Model.FacebookUrl))
+                    {
+                        <a href="@Model.FacebookUrl" target="_blank"><i class="fa fa-facebook fa-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.TwitterUrl))
+                    {
+                        <a href="@Model.TwitterUrl" target="_blank"><i class="fa fa-twitter fa-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.YoutubeUrl))
+                    {
+                        <a href="@Model.YoutubeUrl" target="_blank"><i class="fa fa-youtube fa-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.PinterestUrl))
+                    {
+                        <a href="@Model.PinterestUrl" target="_blank"><i class="fa fa-pinterest fa-lg"></i></a>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(Model.InstagramUrl))
+                    {
+                        <a href="@Model.InstagramUrl" target="_blank"><i class="fa fa-instagram fa-lg"></i></a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Navbar -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="de-flex sm-pt10">
+                    <!-- Logo -->
+                    <div class="de-flex-col">
+                        <div id="logo">
+                            <a asp-controller="home" asp-action="index">
+                                <img class="logo-1" src="~/images/logo-light.png" alt="">
+                                <img class="logo-2" src="~/images/logo.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Menu -->
+                    <div class="de-flex-col header-col-mid">
+                        <ul id="mainmenu" style="position:relative;">
+                            <li><a class="menu-item" asp-controller="home" asp-action="index">Ana səhifə</a></li>
+                            <li><a class="menu-item" asp-controller="Account" asp-action="Dashboard">Profil</a></li>
+                            <li><a class="menu-item" asp-controller="car" asp-action="index">Avtomobillər</a></li>
+                            <li><a class="menu-item" asp-controller="booking" asp-action="QuickBooking">Sifariş et</a></li>
+
+                            <!-- Seçilmişlər -->
+                            <li style="position:relative;">
+                                <a href="javascript:void(0);" id="favorites-toggle" class="menu-item" style="display:inline-flex; align-items:center; gap:6px; height:100%;">
+                                    <i class="fa fa-heart" style="color: red;"></i>
+                                    Seçilmişlər
+                                </a>
+                                <ul id="favorites-menu-list"
+                                    style="display:none;min-width:250px;background:#fff;color:#000;padding:10px;list-style:none;
+                                           box-shadow:0 2px 6px rgba(0,0,0,0.15);border-radius:4px;position:absolute;
+                                           right:0;top:100%;z-index:999;">
+                                    <!-- JS ilə dolacaq -->
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Right Side -->
+                    <div class="de-flex-col">
+                        <div class="menu_side_area">
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn-main border-0 bg-transparent text-white" style="background:green">
+                                        Log out
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <a asp-controller="account" asp-action="login" class="btn-main">Sign in</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<!-- CSS & JS -->
+<style>
+    #favorites-menu-list li {
+        padding: 6px 8px;
+        border-bottom: 1px solid #ddd;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+        #favorites-menu-list li:hover {
+            background-color: #f5f5f5;
+        }
+
+        #favorites-menu-list li img {
+            width: 40px;
+            height: 25px;
+            object-fit: cover;
+            border-radius: 3px;
+            margin-right: 8px;
+        }
+
+        #favorites-menu-list li:last-child {
+            border-bottom: none;
+        }
+
+    .remove-favorite {
+        cursor: pointer;
+        color: red;
+        font-weight: bold;
+        font-size: 16px;
+    }
+
+        .remove-favorite:hover {
+            color: darkred;
+        }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const favoritesKey = "favoriteCars";
+        let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+
+        const favoritesMenu = document.getElementById("favorites-menu-list");
+        const favoritesToggle = document.getElementById("favorites-toggle");
+
+        function renderFavoritesDropdown() {
+            favoritesMenu.innerHTML = "";
+            if (favorites.length === 0) {
+                favoritesMenu.innerHTML = "<li>Seçilmiş yoxdur</li>";
+                return;
+            }
+
+            favorites.forEach(car => {
+                favoritesMenu.insertAdjacentHTML("beforeend", `
+                    <li>
+                        <a href="/Car/Details/${car.id}" style="display:flex;align-items:center;gap:5px;text-decoration:none;color:inherit;">
+                            <img src="/images/car/${car.image}" alt="${car.name}" style="width:50px;height:30px;object-fit:cover;" />
+                            <span>${car.name}</span>
+                        </a>
+                    </li>
+                `);
+            });
+
+            document.querySelectorAll(".remove-favorite").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const id = btn.getAttribute("data-id");
+                    favorites = favorites.filter(f => f.id != id);
+                    localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+                    renderFavoritesDropdown();
+                });
+            });
+        }
+
+        if (favoritesToggle) {
+            favoritesToggle.addEventListener("click", function (e) {
+                e.preventDefault();
+                favoritesMenu.style.display = (favoritesMenu.style.display === "block") ? "none" : "block";
+            });
+        }
+
+        document.addEventListener("click", function (e) {
+            if (!favoritesMenu.contains(e.target) && !favoritesToggle.contains(e.target)) {
+                favoritesMenu.style.display = "none";
+            }
+        });
+
+        renderFavoritesDropdown();
+    });
+</script>

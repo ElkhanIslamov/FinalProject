@@ -1,0 +1,113 @@
+﻿@model List<RentACar.Models.UserBookingViewModel>
+
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Subheader -->
+<section id="subheader" class="jarallax text-light">
+    <img src="~/images/background/14.jpg" class="jarallax-img" alt="">
+    <div class="center-y text-center">
+        <div class="container">
+            <h1 class="text-uppercase">My Dashboard</h1>
+        </div>
+    </div>
+</section>
+
+<!-- Dashboard Content -->
+<section id="section-dashboard" class="bg-gray-100 py-5">
+    <div class="container">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <div class="col-lg-3 mb-4">
+                <div class="card padding30 rounded-5 text-center">
+                    <div class="profile_avatar mb-3">
+                        <img src="~/images/profile/1.jpg" alt="Avatar" class="rounded-circle" width="100">
+                        <h5 class="mt-3">@User.Identity?.Name</h5>
+                        <span class="text-muted">@User.Identity?.Name</span>
+                    </div>
+
+                    <hr />
+                    <ul class="menu-col list-unstyled text-start">
+                        <li><a class="active"><i class="fa fa-home me-2"></i>Dashboard</a></li>
+                        <li><a asp-controller="Account" asp-action="ChangePassword"><i class="fa fa-key me-2"></i>Change Password</a></li>
+                        <li>
+                            <form asp-controller="Account" asp-action="Logout" method="post">
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-link text-danger p-0 mt-2">
+                                    <i class="fa fa-sign-out me-2"></i>Log Out
+                                </button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-lg-9">
+                <div class="card padding30 rounded-5 mb-4">
+                    <h4 class="mb-4">My Recent Bookings</h4>
+
+                    <div class="table-responsive">
+                        <table class="table table-striped de-table">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Car Name</th>
+                                    <th>Pick Up</th>
+                                    <th>Drop Off</th>
+                                    <th>Pick Up Date</th>
+                                    <th>Return Date</th>
+                                    <th>Total Price</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model != null && Model.Any())
+                                {
+                                    foreach (var booking in Model)
+                                    {
+                                        <tr>
+                                            <td>@booking.CarName</td>
+                                            <td>@booking.PickupLocation</td>
+                                            <td>@booking.DropoffLocation</td>
+                                            <td>@booking.PickupDate.ToShortDateString()</td>
+                                            <td>@booking.ReturnDate.ToShortDateString()</td>
+                                            <td>@booking.TotalPrice ₼</td>
+                                            <td>
+                                                @switch (booking.Status)
+                                                {
+                                                    case "Pending":
+                                                        <span class="badge bg-warning">Pending</span>
+                                                        break;
+                                                    case "Approved":
+                                                        <span class="badge bg-success">Approved</span>
+                                                        break;
+                                                    case "Rejected":
+                                                        <span class="badge bg-danger">Rejected</span>
+                                                        break;
+                                                    default:
+                                                        <span class="badge bg-secondary">@booking.Status</span>
+                                                        break;
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">No bookings found.</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

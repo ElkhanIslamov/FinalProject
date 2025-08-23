@@ -1,0 +1,242 @@
+﻿@model RentACar.Models.HomeIndexViewModel
+
+<div class="no-bottom no-top" id="content">
+    <div id="top"></div>
+
+    <!-- Hero Section -->
+    <section id="section-hero" aria-label="section" class="jarallax full-height vertical-center">
+        <img src="@Url.Content(Model.HeroSection.BackgroundImageUrl ?? "images/background/1.jpg")" class="jarallax-img" alt="">
+        <div class="container position-relative z1000">
+            <div class="row align-items-center">
+                <div class="col-lg-6 text-light">
+                    <h4><span class="id-color">@Model.HeroSection.SmallTitle</span></h4>
+                    <div class="spacer-10"></div>
+                    <h1 class="mb-2">@Model.HeroSection.MainTitle</h1>
+                    <div class="spacer-10"></div>
+                    <p class="lead">@Model.HeroSection.Description</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Feature Section -->
+    <section aria-label="section">
+        <div class="container">
+            <div class="row align-items-center">
+                <!-- Başlıq -->
+                <div class="col-lg-6 offset-lg-3 text-center">
+                    @if (Model.FeatureSection != null)
+                    {
+                        <h2>@Model.FeatureSection.Title</h2>
+                        <p>@Model.FeatureSection.Description</p>
+                    }
+                    <div class="spacer-20"></div>
+                </div>
+                <div class="clearfix"></div>
+                <!-- Sol tərəf (ilk 2 feature) -->
+                <div class="col-lg-3">
+                    @foreach (var feature in Model.Features.Take(2))
+                    {
+                        <div class="box-icon s2 p-small mb20 wow fadeInRight" data-wow-delay=".5s">
+                            <i class="fa bg-color @feature.Icon"></i>
+                            <div class="d-inner">
+                                <h4>@feature.Title</h4>
+                                <p>@feature.Description</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Orta şəkil -->
+                <div class="col-lg-6 text-center">
+                    @if (Model.Features.Any(f => f.ImageUrl != null))
+                    {
+                        <img src="@Model.Features.FirstOrDefault(f => f.ImageUrl != null)?.ImageUrl"
+                             alt="Car Feature"
+                             class="img-fluid wow fadeInUp">
+                    }
+                    else
+                    {
+                        <img src="~/images/misc/car.png" alt="Default Car Feature" class="img-fluid wow fadeInUp">
+                    }
+                </div>
+
+                <!-- Sağ tərəf (sonrakı 2 feature) -->
+                <div class="col-lg-3">
+                    @foreach (var feature in Model.Features.Skip(2).Take(2))
+                    {
+                        <div class="box-icon s2 d-invert p-small mb20 wow fadeInLeft" data-wow-delay="1s">
+                            <i class="fa bg-color @feature.Icon"></i>
+                            <div class="d-inner">
+                                <h4>@feature.Title</h4>
+                                <p>@feature.Description</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Vehicle Section -->
+    <section id="section-cars">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 offset-lg-3 text-center">
+                    @if (Model.VehicleFleetSetting != null)
+                    {
+                        <h2>@Model.VehicleFleetSetting.Title</h2>
+                        <p>@Model.VehicleFleetSetting.Description</p>
+                    }
+                    
+                    <div class="spacer-20"></div>
+                </div>
+
+                <div id="items-carousel" class="owl-carousel wow fadeIn">
+                    @foreach (var item in Model.Cars)
+                    {
+                        <div class="col-lg-12 car-parent">
+                            <div class="de-item mb30 car-card"
+                                 data-car-id="@item.Id"
+                                 data-car-name="@item.Name"
+                                 data-car-image="@item.ImageUrl"
+                                 data-price="@item.PricePerDay"
+                                 data-category-id="@item.CategoryId">
+                                <div class="d-img">
+                                    <img src="@Url.Content("~/images/car/" + item.ImageUrl)" class="img-fluid" alt="@item.Name">
+                                </div>
+                                <div class="d-info">
+                                    <div class="d-text">
+                                        <h4>@item.Name</h4>
+                                        <div class="d-item_like">
+                                            <i class="fa fa-heart favorite-icon" style="cursor:pointer; color:grey;" title="Add to favorites"></i>
+                                        </div>
+                                        <div class="d-atr-group">
+                                            <span class="d-atr"><img src="images/icons/1-green.svg" alt="">@item.Seats</span>
+                                            <span class="d-atr"><img src="images/icons/2-green.svg" alt="">@item.Doors</span>
+                                            <span class="d-atr"><img src="images/icons/3-green.svg" alt="">@item.Luggage</span>
+                                            <span class="d-atr"><img src="images/icons/4-green.svg" alt="">@item.Category?.Name</span>
+                                        </div>
+                                        <div class="d-price">
+                                            Daily rate from <span>₼@item.PricePerDay.ToString("N0")</span>
+                                            <a asp-controller="booking" asp-action="QuickBooking" asp-route-id="@item.Id" class="btn-main">Rent Now</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="text-light jarallax" aria-label="section">
+        <img src="@Url.Content(Model.TimelineSteps.FirstOrDefault()?.ImageUrl ?? "")"
+             alt="" class="jarallax-img">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-light">
+                    <div class="container-timeline">
+                        <ul>
+                            @foreach (var step in Model.TimelineSteps)
+                            {
+                                <li>                                   
+                                    <h4>@step.Title</h4>
+                                    <p>@step.Description</p>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <!-- FAQ Section -->
+    <section id="section-faq">
+        <div class="container">
+            <div class="row">
+                <div class="col text-center">
+                    <h2>
+                        @if (Model.Faqs != null && Model.Faqs.Any(f => !string.IsNullOrEmpty(f.FaqText)))
+                        {
+                            <small class="text-muted">@Model.Faqs.First(f => !string.IsNullOrEmpty(f.FaqText)).FaqText</small>
+                        }
+                    </h2>
+                    <div class="spacer-20"></div>
+                </div>
+            </div>
+
+            <div class="row g-custom-x">
+                @if (Model.Faqs != null && Model.Faqs.Any())
+                {
+                    var half = (int)Math.Ceiling(Model.Faqs.Count / 2.0);
+                    var leftFaqs = Model.Faqs.Take(half).ToList();
+                    var rightFaqs = Model.Faqs.Skip(half).ToList();
+
+                    <!-- Sol sütun -->
+                    <div class="col-md-6 wow fadeInUp">
+                        <div class="accordion secondary">
+                            <div class="accordion-section">
+                                @foreach (var faq in leftFaqs)
+                                {
+                                    <div class="accordion-section-title" data-tab="#accordion-@faq.Id">
+                                        @faq.Question
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-@faq.Id">
+                                        <p>@faq.Answer</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sağ sütun -->
+                    <div class="col-md-6 wow fadeInUp">
+                        <div class="accordion secondary">
+                            <div class="accordion-section">
+                                @foreach (var faq in rightFaqs)
+                                {
+                                    <div class="accordion-section-title" data-tab="#accordion-b-@faq.Id">
+                                        @faq.Question
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-b-@faq.Id">
+                                        <p>@faq.Answer</p>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-12 text-center">
+                        <p>FAQ yoxdur.</p>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+
+
+</div>
+
+<style>
+    #section-cars .de-item .d-img img {
+        width: 300px;
+        height: 200px;
+        object-fit: cover;
+        display: block;
+        margin: 0 auto;
+    }
+</style>
+
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" rel="stylesheet" />
+    <script>
+        // Burada sənin favoritlər, filter və pagination scriptləri qalır
+    </script>
+}

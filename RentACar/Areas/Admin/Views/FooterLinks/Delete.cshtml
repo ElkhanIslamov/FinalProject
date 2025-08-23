@@ -1,0 +1,20 @@
+﻿@model RentACar.DataContext.Entities.FooterLink
+
+@{
+    ViewData["Title"] = "Footer Link Sil";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Footer Link Sil</h2>
+
+<h4>Bu linki silmək istədiyinizdən əminsiniz?</h4>
+<div>
+    <h5>@Model.Title</h5>
+    <p>@Model.Url</p>
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">İmtina et</a>
+</form>

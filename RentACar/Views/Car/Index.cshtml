@@ -1,0 +1,170 @@
+﻿@model RentACar.Models.CarsViewModel
+
+<div class="no-bottom no-top zebra" id="content">
+    <div id="top"></div>
+
+    <!-- Header Section -->
+    <section id="subheader" class="jarallax text-light">
+        <img src="images/background/2.jpg" class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <h1>Cars</h1>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Filter & Car List Section -->
+    <section id="section-cars">
+        <div class="container">
+            <div class="row">
+
+                <!-- Filter Sidebar -->
+                <div class="col-lg-3">
+                    <!-- Search -->
+                    <div class="item_filter_group">
+                        <h4>Search</h4>
+                        <div class="de_form">
+                            <input type="text" placeholder="Search by name..." id="search-input" class="form-control" />
+                        </div>
+                    </div>
+
+                    <!-- Category Filter -->
+                    <div class="item_filter_group">
+                        <h4>Car Body Type</h4>
+                        <div class="de_form">
+                            @foreach (var bodyType in Model.Categories)
+                            {
+                                <div class="de_checkbox">
+                                    <input id="car_body_type_@bodyType.Id" type="checkbox" value="@bodyType.Id" class="category-filter" />
+                                    <label for="car_body_type_@bodyType.Id">@bodyType.Name</label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Price Filter -->
+                    <div class="item_filter_group">
+                        <h4>Price Range</h4>
+                        <input type="number" id="minPrice" placeholder="Min Price" class="form-control mb-2" />
+                        <input type="number" id="maxPrice" placeholder="Max Price" class="form-control mb-2" />
+                        <button id="applyPriceFilter" class="btn btn-primary mt-2">Apply</button>
+                        <div id="price-slider" style="margin-top:60px;"></div>
+                    </div>
+                </div>
+
+                <!-- Car Cards -->
+                <div class="col-lg-9">
+                    <div class="row" id="car-list">
+                        @foreach (var item in Model.Cars)
+                        {
+                            <div class="col-xl-4 col-lg-6 car-parent">
+                                <div class="de-item mb-2 car-card p-2" data-car-id="@item.Id" data-car-name="@item.Name" data-car-image="@item.ImageUrl" data-price="@item.PricePerDay" data-category-id="@item.CategoryId">
+                                    <a href="@Url.Action("Details", "Car", new { id = item.Id })">
+                                        <div class="d-img">
+                                            <img src="images/car/@item.ImageUrl" class="img-fluid" alt="@item.Name">
+                                        </div>
+                                    </a>
+                                    <div class="d-info">
+                                        <div class="d-text">
+                                            <h4 class="mb-1">@item.Name</h4>
+                                            <div class="d-item_like">
+                                                <i class="fa fa-heart favorite-icon item.Id ? "active" : "")"
+                                                   data-id="@item.Id"
+                                                   style="cursor:pointer; color:item.Id ? "red" : "grey");">
+                                                </i>
+                                            </div>
+
+                                            <div class="d-attributes mb-1">
+                                                <div class="d-attr-row">
+                                                    <span class="d-atr"><img src="images/icons/1-green.svg" alt="">@item.Seats</span>
+                                                    <span class="d-atr"><img src="images/icons/2-green.svg" alt="">@item.Doors</span>
+                                                    <span class="d-atr"><img src="images/icons/3-green.svg" alt="">@item.Luggage</span>
+                                                </div>
+                                                <div class="d-category">
+                                                    <span class="d-atr"><img src="images/icons/4-green.svg" alt="">@item.Category?.Name</span>
+                                                </div>
+                                            </div>
+                                            <div class="d-price">
+                                                Günlük qiymət <span>₼@item.PricePerDay.ToString("N0")</span>
+                                                <a href="/Booking/QuickBooking?carId=@item.Id" class="btn-main btn-sm">Rent Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+
+                    <!-- Pagination -->
+                    <div class="d-flex justify-content-center align-items-center mt-3 gap-2">
+                        <div id="pagination-prev" class="page-arrow" style="cursor:pointer;">&#8249;</div>
+                        <div id="pagination-scroll" class="d-flex overflow-auto" style="gap:5px;"></div>
+                        <div id="pagination-next" class="page-arrow" style="cursor:pointer;">&#8250;</div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+.car-card { min-height: 220px; display:flex; flex-direction: column; }
+.car-card .d-img { height: 130px; overflow:hidden; }
+.car-card .d-img img { width:100%; height:100%; object-fit:cover; }
+.car-card .d-info { flex:1; display:flex; flex-direction:column; justify-content:space-between; }
+.favorite-icon.active { color:red !important; }
+#price-slider { width:100%; }
+
+.page-scroll-btn {
+    min-width: 40px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.page-scroll-btn.active {
+    background: #007bff;
+    color: white;
+}
+.page-arrow {
+    font-size: 24px;
+    user-select: none;
+    padding: 0 10px;
+    color: #007bff;
+}
+#pagination-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+#pagination-scroll::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 3px;
+}
+</style>
+
+@section Scripts {
+    <script>
+        $(document).on("click", ".favorite-icon", function () {
+            var icon = $(this);
+            var id = icon.data("id");
+
+            $.post("/Favorites/Toggle", { id: id }, function () {
+                // toggle rəng
+                if (icon.hasClass("active")) {
+                    icon.removeClass("active").css("color", "grey");
+                } else {
+                    icon.addClass("active").css("color", "red");
+                }
+            });
+        });
+    </script>
+}

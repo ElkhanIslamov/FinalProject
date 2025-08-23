@@ -1,0 +1,21 @@
+﻿@model RentACar.DataContext.Entities.FooterInfo
+
+@{
+    ViewData["Title"] = "Footer Sil";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Footer Sil</h2>
+
+<div>
+    <h4>@Model.AboutText</h4>
+    <p>@Model.Address</p>
+    <p>@Model.Phone</p>
+    <p>@Model.Email</p>
+</div>
+
+<form asp-action="DeleteConfirmed" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">Ləğv Et</a>
+</form>

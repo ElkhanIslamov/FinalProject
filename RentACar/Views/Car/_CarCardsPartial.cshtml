@@ -1,0 +1,30 @@
+﻿@model List<RentACar.DataContext.Entities.Car>
+
+@foreach (var item in Model)
+{
+    <div class="col-xl-4 col-lg-6">
+        <div class="de-item mb30">
+            <div class="d-img">
+                <img src="images/car/@item.ImageUrl" class="img-fluid" alt="">
+            </div>
+            <div class="d-info">
+                <div class="d-text">
+                    <h4>@item.Name</h4>
+                    <div class="d-atr-group">
+                        <span class="d-atr"><img src="images/icons/1-green.svg" alt="">@item.Seats</span>
+                        <span class="d-atr"><img src="images/icons/3-green.svg" alt="">@item.Doors</span>
+                        <span class="d-atr"><img src="images/icons/2-green.svg" alt="">@item.Luggage</span>
+                    </div>
+                    <div class="d-atr-category mt-2">
+                        <span class="d-atr"><img src="images/icons/4-green.svg" alt="">@item.Category?.Name</span>
+                    </div>
+
+                    <div class="d-price">
+                        Daily rate from <span>₼@item.PricePerDay</span>
+                        <a href="/Booking/QuickBooking?carId=@item.Id" class="btn-main">Rent Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

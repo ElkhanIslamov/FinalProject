@@ -1,0 +1,68 @@
+﻿@using RentACar.Areas.Admin.Models
+@model DashboardViewModel
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-white bg-primary mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Cars</h5>
+                <p class="card-text display-4">@Model.TotalCars</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-success mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Rented Cars</h5>
+                <p class="card-text display-4">@Model.RentedCars</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-info mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Today's Bookings</h5>
+                <p class="card-text display-4">@Model.TodaysBookings</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-white bg-warning mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Total Revenue</h5>
+                <p class="card-text display-4">$@Model.TotalRevenue</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h3>Recent Bookings</h3>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Car</th>
+                    <th>Booking Date</th>
+                    <th>Return Date</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var booking in Model.RecentBookings)
+                {
+                    <tr>
+                        <td>@booking.CustomerName</td>
+                        <td>@booking.CarName</td>
+                        <td>@booking.BookingDate.ToString("dd MMM yyyy")</td>
+                        <td>@booking.ReturnDate.ToString("dd MMM yyyy")</td>
+                        <td>$@booking.Price</td>
+                        <td>@booking.Status</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

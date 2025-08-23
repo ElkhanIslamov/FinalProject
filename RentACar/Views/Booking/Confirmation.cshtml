@@ -1,0 +1,54 @@
+﻿@model RentACar.DataContext.Entities.Booking
+@{
+    ViewData["Title"] = "Booking Confirmation";
+}
+
+<div class="no-bottom no-top" id="content">
+    <div id="top"></div>
+
+    <section class="section-hero" style="padding-top: 20px;">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-sm p-4 text-center">
+                        <h2 class="mb-3">Booking Confirmed!</h2>
+                        <p class="lead">Thank you, <strong>@Model.CustomerName</strong></p>
+
+                        <hr />
+
+                        <div class="text-start mt-3">
+                            <p><strong>Car:</strong> @Model.CarType</p>
+                            <p><strong>Pickup:</strong> @Model.PickupLocation @Model.PickupDate.ToString("dd MMM yyyy") @Model.PickupTime</p>
+                            <p><strong>Dropoff:</strong> @Model.DropoffLocation @Model.ReturnDate.ToString("dd MMM yyyy") @Model.ReturnTime</p>
+                            <p><strong>Status:</strong> <span class="text-success">@Model.Status</span></p>
+                        </div>
+
+                        <hr />
+
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3 w-100">
+                            Back to Home
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<style>
+    /* Confirmation card yığcam və mərkəzləşdirilmiş */
+    #content .card {
+        border-radius: 12px;
+        padding: 30px;
+        background-color: #ffffff;
+    }
+
+    #content h2 {
+        color: #28a745; /* Yaşıl status mesajı */
+    }
+
+    #content .btn-primary {
+        font-size: 16px;
+        padding: 12px;
+    }
+</style>

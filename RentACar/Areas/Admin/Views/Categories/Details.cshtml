@@ -1,0 +1,22 @@
+﻿ @model RentACar.DataContext.Entities.Category
+@{
+    ViewData["Title"] = "Kateqoriya Detalları";
+    Layout = "/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Kateqoriya Detalları</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">ID</dt>
+            <dd class="col-sm-10">@Model.Id</dd>
+
+            <dt class="col-sm-2">Ad</dt>
+            <dd class="col-sm-10">@Model.Name</dd>
+        </dl>
+
+        <a asp-action="Index" class="btn btn-secondary">Geri qayıt</a>
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Redaktə et</a>
+    </div>
+</div>

@@ -1,0 +1,41 @@
+﻿@model RentACar.DataContext.Entities.FooterInfo
+
+@{
+    ViewData["Title"] = "Yeni Footer Əlavə Et";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Yeni Footer Əlavə Et</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label>About Text</label>
+        <input asp-for="AboutText" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Address</label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Phone</label>
+        <input asp-for="Phone" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Facebook</label>
+        <input asp-for="FacebookUrl" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Twitter</label>
+        <input asp-for="TwitterUrl" class="form-control" />
+    </div>  
+    <div class="form-group">
+        <label>Pinterest</label>
+        <input asp-for="PinterestUrl" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-success">Əlavə Et</button>
+    <a asp-action="Index" class="btn btn-secondary">Geri Qayıt</a>
+</form>

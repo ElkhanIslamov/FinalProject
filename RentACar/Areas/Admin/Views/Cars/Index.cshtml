@@ -1,0 +1,96 @@
+﻿@model List<RentACar.DataContext.Entities.Car>
+
+@{
+    ViewData["Title"] = "Cars";
+    Layout = "~/Areas/Admin/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Maşın Siyahısı</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Yeni Maşın Əlavə Et</a>
+</p>
+
+<table class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>Ad və Şəkillər</th>
+            <th>Oturacaq</th>
+            <th>Qapı</th>
+            <th>Yük</th>
+            <th>Günlük Qiymət</th>
+            <th>Kateqoriya</th>
+            <th>Təsvir</th>
+            <th>Əməliyyatlar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.Id</td>
+
+                <td>
+                    <div>
+                        <strong>@car.Name</strong><br />
+
+                        <strong>Əsas şəkil:</strong><br />
+                        <img src="~/images/car/@car.ImageUrl" width="60" class="mb-2 border rounded" />
+
+                        @if (car.Images != null && car.Images.Any())
+                        {
+                            <div>
+                                <strong>Əlavə şəkillər:</strong><br />
+                                @foreach (var image in car.Images)
+                                {
+                                    <img src="~/images/car/@image.ImageUrl" width="60" class="mr-1 mb-1 border rounded" />
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="text-muted small">Əlavə şəkil yoxdur</div>
+                        }
+                    </div>
+                </td>
+
+                <td>@car.Seats</td>
+                <td>@car.Doors</td>
+                <td>@car.Luggage</td>
+                <td>@car.PricePerDay ₼</td>
+                <td>@car.Category?.Name</td>
+
+                <td>
+                    <span class="text-truncate d-inline-block" style="max-width: 200px;" title="@car.Description">
+                        @car.Description
+                    </span>
+                </td>               
+                <td>
+                    <a asp-action="Edit" asp-route-id="@car.Id" class="btn btn-warning btn-sm mb-1">Redaktə</a>
+                    <a asp-action="Details" asp-route-id="@car.Id" class="btn btn-info btn-sm mb-1">Detallar</a>
+
+                    <form method="post" asp-area="Admin" asp-controller="Cars" asp-action="Delete" onsubmit="return confirm('“@car.Name” adlı maşını silmək istədiyinizə əminsiniz?');" style="display:inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="id" value="@car.Id" />
+                        <button type="submit" class="btn btn-danger btn-sm">Sil</button>
+                    </form>
+                </td>                
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.delete-button').forEach(button => {
+            button.addEventListener('click', function () {
+                const carId = this.getAttribute('data-id');
+                const carName = this.getAttribute('data-name');
+                if (confirm(`“${carName}” adlı maşını silmək istədiyinizə əminsiniz?`)) {
+                    window.location.href = `/Admin/Car/Delete/${carId}`;
+                }
+            });
+        });
+    </script>
+}

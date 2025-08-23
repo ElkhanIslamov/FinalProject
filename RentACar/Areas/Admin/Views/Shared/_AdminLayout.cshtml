@@ -1,0 +1,175 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin Panel</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="~/admin/vendors/mdi/css/materialdesignicons.min.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/admin/vendors/base/vendor.bundle.base.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/admin/vendors/datatables.net-bs4/dataTables.bootstrap4.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/admin/css/style.css" asp-append-version="true" />
+    <link rel="shortcut icon" href="~/admin/images/favicon.png" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papaz..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container-scroller">
+        <!-- Navbar -->
+        <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
+            <div class="navbar-brand-wrapper d-flex justify-content-center">
+                <div class="navbar-brand-inner-wrapper d-flex justify-content-between align-items-center w-100">
+                    <a class="navbar-brand brand-logo" asp-controller="dashboard" asp-action="index">
+                        <img src="~/admin/images/logo.svg" alt="logo" />
+                    </a>
+                    <a class="navbar-brand brand-logo-mini" asp-controller="dashboard" asp-action="index">
+                        <img src="~/admin/images/logo-mini.svg" alt="logo" />
+                    </a>
+                    <button class="navbar-toggler navbar-toggler align-self-center" type="button" data-toggle="minimize">
+                        <span class="mdi mdi-sort-variant"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
+                <ul class="navbar-nav navbar-nav-right">
+                    <li class="nav-item nav-profile dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" id="profileDropdown">
+                            <img src="~/admin/images/faces/face5.jpg" alt="profile" />
+                            <span class="nav-profile-name">Admin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
+                            <a class="dropdown-item"><i class="mdi mdi-settings text-primary"></i> Settings</a>
+                            <a class="dropdown-item"><i class="mdi mdi-logout text-primary"></i> Logout</a>                           
+                        </div>
+                    </li>
+                </ul>
+                <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
+                    <span class="mdi mdi-menu"></span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="container-fluid page-body-wrapper">
+            <!-- Sidebar -->
+            <nav class="sidebar sidebar-offcanvas" id="sidebar">
+                <ul class="nav">
+                    <li class="nav-item">
+                        <a class="nav-link collapsed" data-bs-toggle="collapse" href="#sectionsMenu" role="button" aria-expanded="false" aria-controls="sectionsMenu">
+                            <i class="mdi mdi-view-dashboard menu-icon"></i>
+                            <span class="menu-title">HomeSections</span>
+                            <i class="menu-arrow"></i>
+                        </a>
+                        <div class="collapse" id="sectionsMenu">
+                            <ul class="nav flex-column sub-menu">
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="HomeHeroSection" asp-action="Index">HeroSection</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="HomeFeatureSection" asp-action="Index">HomeFeatureHeader</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="HomeFeature" asp-action="Index">HomeFeature</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="TimelineSteps" asp-action="Index">TimelineSteps</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="HomeFaq" asp-action="Index">HomeFaq</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" asp-controller="VehicleFleet" asp-action="Index">VehicleFleet</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                            <i class="mdi mdi-home menu-icon"></i>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Users" asp-action="Index">
+                            <i class="mdi mdi-account-multiple menu-icon"></i>
+                            <span class="menu-title">Users</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Categories" asp-action="Index">
+                            <i class="mdi mdi-view-list menu-icon"></i>
+                            <span class="menu-title">Categories</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Cars" asp-action="Index">
+                            <i class="mdi mdi-view-list menu-icon"></i>
+                            <span class="menu-title">Cars</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Booking" asp-action="Index">
+                            <i class="mdi mdi-view-list menu-icon"></i>
+                            <span class="menu-title">Bookings</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="HeaderInfo" asp-action="Index">
+                            <i class="mdi mdi-view-list menu-icon"></i>
+                            <span class="menu-title">HeaderInfo</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="Footer" asp-action="Index">
+                            <i class="mdi mdi-view-list menu-icon"></i>
+                            <span class="menu-title">FooterInfo</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="FooterLinks" asp-action="Index">
+                            <i class="mdi mdi-view-list menu-icon"></i>
+                            <span class="menu-title">FooterLinks</span>
+                        </a>
+                    </li>
+                 </ul>
+            </nav>
+
+            <!-- Main Panel -->
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    @RenderSection("Scripts", required: false)
+
+                    @RenderBody()
+                </div>
+
+                <!-- Footer -->
+                <footer class="footer">
+                    <div class="d-sm-flex justify-content-center justify-content-sm-between">
+                        <span class="text-muted text-center text-sm-left d-block d-sm-inline-block">
+                            © @DateTime.Now.Year BootstrapDash. All rights reserved.
+                        </span>
+                        <span class="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
+                            Admin Template by <a href="https://www.bootstrapdash.com/" target="_blank">Bootstrapdash</a>
+                        </span>
+                    </div>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="~/admin/vendors/base/vendor.bundle.base.js" asp-append-version="true"></script>
+    <script src="~/admin/vendors/chart.js/Chart.min.js" asp-append-version="true"></script>
+    <script src="~/admin/vendors/datatables.net/jquery.dataTables.js" asp-append-version="true"></script>
+    <script src="~/admin/vendors/datatables.net-bs4/dataTables.bootstrap4.js" asp-append-version="true"></script>
+    <script src="~/admin/js/off-canvas.js" asp-append-version="true"></script>
+    <script src="~/admin/js/hoverable-collapse.js" asp-append-version="true"></script>
+    <script src="~/admin/js/template.js" asp-append-version="true"></script>
+    <script src="~/admin/js/dashboard.js" asp-append-version="true"></script>
+    <script src="~/admin/js/data-table.js" asp-append-version="true"></script>
+    <script src="~/admin/js/jquery.cookie.js" asp-append-version="true"></script>
+</body>
+</html>

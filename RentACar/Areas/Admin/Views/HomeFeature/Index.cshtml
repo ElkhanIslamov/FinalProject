@@ -1,0 +1,38 @@
+﻿@model IEnumerable<RentACar.DataContext.Entities.HomeFeature>
+
+<h2>Features</h2>
+<a asp-action="Create" class="btn btn-success mb-3">Add Feature</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Icon</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Image</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var f in Model)
+        {
+            <tr>
+                <td><i class="fa @f.Icon fa-2x"></i></td>
+                <td>@f.Title</td>
+                <td>@f.Description</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(f.ImageUrl))
+                    {
+                        <img src="@Url.Content(f.ImageUrl)" width="80" />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@f.Id" class="btn btn-primary btn-sm">Edit</a>
+                    <form asp-action="Delete" asp-route-id="@f.Id" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
