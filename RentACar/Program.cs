@@ -1,12 +1,13 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using RentACar.DataContext.Entities;
-using RentACar.DataContext;
 using Mailing;
 using Mailing.MailKitImplementations;
-using RentACar.Data;
-using RentACar.Seed;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using RentACar.Areas.Admin.Data;
+using RentACar.Data;
+using RentACar.DataContext;
+using RentACar.DataContext.Entities;
+using RentACar.Seed;
 using Stripe;
 
 namespace RentACar
@@ -48,7 +49,12 @@ namespace RentACar
 
             FilePathConstants.CarPath = Path.Combine(builder.Environment.WebRootPath, "images", "car");
 
-            builder.Services.AddSession();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(60);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
 
 
             var app = builder.Build();
@@ -88,5 +94,7 @@ namespace RentACar
 
             app.Run();
         }
+       
+
     }
 }

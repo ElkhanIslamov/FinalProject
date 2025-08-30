@@ -1,0 +1,25 @@
+﻿@model RentACar.Areas.Admin.Models.TeamMemberVM
+
+@{
+    ViewData["Title"] = "Delete Team Member";
+}
+
+<h2>Delete Team Member</h2>
+
+<div class="alert alert-danger">
+    Are you sure you want to delete <strong>@Model.FullName</strong>?
+</div>
+
+<div>
+    <p>Position: @Model.Position</p>
+    @if (!string.IsNullOrEmpty(Model.ImageUrl))
+    {
+        <img src="@Model.ImageUrl" width="100" />
+    }
+</div>
+
+<form asp-action="Delete">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -2,8 +2,8 @@ using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentACar.DataContext;
+using RentACar.DataContext.Entities;
 using RentACar.Models;
-
 
 namespace RentACar.Controllers;
 
@@ -20,9 +20,9 @@ public class HomeController : Controller
     {
         var vm = new HomeIndexViewModel
         {
-            HeroSection = _context.HomeHeroSections.FirstOrDefault()!,
-            FeatureSection = _context.HomeFeatureSections.FirstOrDefault(),
-            VehicleFleetSetting = _context.VehicleFleetSettings.FirstOrDefault()!,
+            HeroSection = _context.HomeHeroSections.FirstOrDefault() ?? new HomeHeroSection { MainTitle = "Welcome", SmallTitle = "Default Hero" },
+            FeatureSection = _context.HomeFeatureSections.FirstOrDefault() ?? new HomeFeatureSection { Title = "Our Features" },
+            VehicleFleetSetting = _context.VehicleFleetSettings.FirstOrDefault() ?? new VehicleFleetSetting { Title = "Our Fleet", Description = "Default Fleet Description" },
             Features = _context.HomeFeatures.ToList(),
             Vehicles = _context.HomeVehicles.ToList(),
             TimelineSteps = _context.TimelineSteps.ToList(),
@@ -30,9 +30,9 @@ public class HomeController : Controller
             Cars = _context.Cars
                     .Include(c => c.Category)
                     .ToList()
-            .OrderByDescending(c => c.Id) // ?n son ?lav? olunanlar? g?st?rm?k ???n
-            .Take(6) // m?s?l?n, yaln?z 6 ma??n g?st?r
-            .ToList()
+                    .OrderByDescending(c => c.Id)
+                    .Take(6)
+                    .ToList()
         };
 
         return View(vm);

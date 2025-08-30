@@ -31,7 +31,6 @@ namespace RentACar.Areas.Admin.Controllers
         }
 
         // Create POST
-        // Create POST
         [HttpPost]
         public async Task<IActionResult> Create(HomeHeroSectionViewModel vm)
         {
@@ -150,5 +149,4 @@ namespace RentACar.Areas.Admin.Controllers
             return RedirectToAction(nameof(Index));
         }
     }
-
 }

@@ -1,0 +1,17 @@
+﻿@model RentACar.DataContext.Entities.AboutPage.DirectorsBoard
+
+<h2>Create Directors Board</h2>
+
+<form asp-action="Create" enctype="multipart/form-data" method="post">
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Background Image</label>
+        <input type="file" name="BackgroundImageFile" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Create</button>
+</form>

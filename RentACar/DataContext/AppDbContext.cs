@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RentACar.DataContext.Entities;
+using RentACar.DataContext.Entities.AboutPage;
+using Stripe.Entitlements;
 
 
 namespace RentACar.DataContext;
@@ -26,12 +28,20 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<HomeFeatureSection> HomeFeatureSections { get; set; }  
     public DbSet<TimelineStep> TimelineSteps { get; set; }
     public DbSet<VehicleFleetSetting> VehicleFleetSettings { get; set; }
+    public DbSet<SubHeader> SubHeaders { get; set; }
+    public DbSet<AboutIntro> AboutIntros { get; set; }
+    public DbSet<Statistic> Statistics { get; set; }
+    public DbSet<TeamMember> TeamMembers { get; set; }   
+    public DbSet<QualityTabItem> QualityTabs { get; set; }
+    public DbSet<CallToAction> CallToActions { get; set; }
+    public DbSet<DirectorsBoard> DirectorsBoards { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<AppUser>().ToTable("AppUsers");
+      
     }
 }
 

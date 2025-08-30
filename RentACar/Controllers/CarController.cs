@@ -2,12 +2,17 @@
 using Microsoft.EntityFrameworkCore;
 using RentACar.DataContext;
 using RentACar.Models;
+using RentACar.Extensions; // Session üçün lazımdır
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace RentACar.Controllers
 {
     public class CarController : Controller
     {
         private readonly AppDbContext _dbContext;
+        private const string FavoritesSessionKey = "Favorites";
 
         public CarController(AppDbContext dbContext)
         {
@@ -16,8 +21,19 @@ namespace RentACar.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categories = await _dbContext.Categories.ToListAsync(); // 1-ci sorğu
-            var cars = await _dbContext.Cars.Include(c => c.Category).ToListAsync(); // 2-ci sorğu
+            var categories = await _dbContext.Categories.ToListAsync();
+            var cars = await _dbContext.Cars
+                                       .Include(c => c.Category)
+                                       .ToListAsync();
+
+            // ⭐ Session-dan favoritləri götür
+            var favorites = HttpContext.Session.GetObjectFromJson<List<int>>(FavoritesSessionKey) ?? new List<int>();
+
+            // ⭐ Favoritləri işarələ
+            foreach (var car in cars)
+            {
+                car.IsFavorite = favorites.Contains(car.Id);
+            }
 
             decimal minPrice = 0;
             decimal maxPrice = 0;
@@ -39,8 +55,6 @@ namespace RentACar.Controllers
             return View(model);
         }
 
-
-
         [HttpPost]
         public async Task<IActionResult> Filter([FromBody] CarFilterRequest filter)
         {
@@ -50,7 +64,6 @@ namespace RentACar.Controllers
 
             if (filter.BodyTypes != null && filter.BodyTypes.Any())
             {
-                // BodyTypes əslində Categories-dirsə, bu belə olmalıdır:
                 query = query.Where(c => filter.BodyTypes.Contains(c.CategoryId));
             }
 
@@ -69,12 +82,20 @@ namespace RentACar.Controllers
 
             var filteredCars = await query.ToListAsync();
 
+            // ⭐ Filter olunanda da favoritləri işarələ
+            var favorites = HttpContext.Session.GetObjectFromJson<List<int>>(FavoritesSessionKey) ?? new List<int>();
+            foreach (var car in filteredCars)
+            {
+                car.IsFavorite = favorites.Contains(car.Id);
+            }
+
             return PartialView("_CarCardsPartial", filteredCars);
         }
+
         public async Task<IActionResult> Details(int id)
         {
             var car = await _dbContext.Cars
-                .Include(c => c.Images)  // əlavə şəkillər də yüklənir
+                .Include(c => c.Images)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
             if (car == null) return NotFound();
@@ -90,8 +111,5 @@ namespace RentACar.Controllers
 
             return View(viewModel);
         }
-
-
-
     }
 }

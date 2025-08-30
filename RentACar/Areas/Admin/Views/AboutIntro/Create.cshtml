@@ -1,0 +1,48 @@
+﻿@model RentACar.DataContext.Entities.AboutPage.AboutIntro
+
+@{
+    ViewData["Title"] = "Create About Intro";
+}
+
+<h2>Create About Intro</h2>
+
+<form asp-action="Create" method="post">
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="CompletedOrdersLabel" class="form-label"></label>
+            <input asp-for="CompletedOrdersLabel" class="form-control" />
+            <label asp-for="CompletedOrdersValue" class="form-label"></label>
+            <input asp-for="CompletedOrdersValue" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="HappyCustomersLabel" class="form-label"></label>
+            <input asp-for="HappyCustomersLabel" class="form-control" />
+            <label asp-for="HappyCustomersValue" class="form-label"></label>
+            <input asp-for="HappyCustomersValue" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="VehiclesFleetLabel" class="form-label"></label>
+            <input asp-for="VehiclesFleetLabel" class="form-control" />
+            <label asp-for="VehiclesFleetValue" class="form-label"></label>
+            <input asp-for="VehiclesFleetValue" class="form-control" />
+        </div>
+        <div class="col-md-6 mb-3">
+            <label asp-for="YearsExperienceLabel" class="form-label"></label>
+            <input asp-for="YearsExperienceLabel" class="form-control" />
+            <label asp-for="YearsExperienceValue" class="form-label"></label>
+            <input asp-for="YearsExperienceValue" class="form-control" />
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

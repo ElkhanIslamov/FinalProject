@@ -1,0 +1,22 @@
+﻿@model RentACar.DataContext.Entities.AboutPage.DirectorsBoard
+
+<h2>Edit Directors Board</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Description</label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+    </div>
+
+    <div class="mb-3">
+        <label>Current Background Image</label><br />
+        @if (!string.IsNullOrEmpty(Model.BackgroundImageUrl))
+        {
+            <img src="~/uploads/team/@Model.BackgroundImageUrl" width="120" class="mb-2" />
+        }
+        <input type="file" name="BackgroundImageFile" class="form-control" />
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+</form>

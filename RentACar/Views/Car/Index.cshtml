@@ -51,7 +51,6 @@
                         <h4>Price Range</h4>
                         <input type="number" id="minPrice" placeholder="Min Price" class="form-control mb-2" />
                         <input type="number" id="maxPrice" placeholder="Max Price" class="form-control mb-2" />
-                        <button id="applyPriceFilter" class="btn btn-primary mt-2">Apply</button>
                         <div id="price-slider" style="margin-top:60px;"></div>
                     </div>
                 </div>
@@ -62,20 +61,27 @@
                         @foreach (var item in Model.Cars)
                         {
                             <div class="col-xl-4 col-lg-6 car-parent">
-                                <div class="de-item mb-2 car-card p-2" data-car-id="@item.Id" data-car-name="@item.Name" data-car-image="@item.ImageUrl" data-price="@item.PricePerDay" data-category-id="@item.CategoryId">
+                                <div class="de-item mb-2 car-card p-2"
+                                     data-car-id="@item.Id"
+                                     data-car-name="@item.Name"
+                                     data-car-image="@item.ImageUrl"
+                                     data-price="@item.PricePerDay"
+                                     data-category-id="@item.CategoryId">
+
                                     <a href="@Url.Action("Details", "Car", new { id = item.Id })">
                                         <div class="d-img">
                                             <img src="images/car/@item.ImageUrl" class="img-fluid" alt="@item.Name">
                                         </div>
                                     </a>
+
                                     <div class="d-info">
                                         <div class="d-text">
                                             <h4 class="mb-1">@item.Name</h4>
+
                                             <div class="d-item_like">
-                                                <i class="fa fa-heart favorite-icon item.Id ? "active" : "")"
+                                                <i class="fa fa-heart favorite-icon"
                                                    data-id="@item.Id"
-                                                   style="cursor:pointer; color:item.Id ? "red" : "grey");">
-                                                </i>
+                                                   style="cursor:pointer;"></i>
                                             </div>
 
                                             <div class="d-attributes mb-1">
@@ -88,6 +94,7 @@
                                                     <span class="d-atr"><img src="images/icons/4-green.svg" alt="">@item.Category?.Name</span>
                                                 </div>
                                             </div>
+
                                             <div class="d-price">
                                                 Günlük qiymət <span>₼@item.PricePerDay.ToString("N0")</span>
                                                 <a href="/Booking/QuickBooking?carId=@item.Id" class="btn-main btn-sm">Rent Now</a>
@@ -114,57 +121,236 @@
 </div>
 
 <style>
-.car-card { min-height: 220px; display:flex; flex-direction: column; }
-.car-card .d-img { height: 130px; overflow:hidden; }
-.car-card .d-img img { width:100%; height:100%; object-fit:cover; }
-.car-card .d-info { flex:1; display:flex; flex-direction:column; justify-content:space-between; }
-.favorite-icon.active { color:red !important; }
-#price-slider { width:100%; }
+    .car-card {
+        min-height: 220px;
+        display: flex;
+        flex-direction: column;
+    }
 
-.page-scroll-btn {
-    min-width: 40px;
-    height: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    flex-shrink: 0;
-}
-.page-scroll-btn.active {
-    background: #007bff;
-    color: white;
-}
-.page-arrow {
-    font-size: 24px;
-    user-select: none;
-    padding: 0 10px;
-    color: #007bff;
-}
-#pagination-scroll::-webkit-scrollbar {
-    height: 6px;
-}
-#pagination-scroll::-webkit-scrollbar-thumb {
-    background-color: #007bff;
-    border-radius: 3px;
-}
+        .car-card .d-img {
+            height: 130px;
+            overflow: hidden;
+        }
+
+            .car-card .d-img img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+            }
+
+        .car-card .d-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+    .favorite-icon.active {
+        color: red !important;
+    }
+
+    #price-slider {
+        width: 100%;
+    }
+
+    .page-scroll-btn {
+        min-width: 40px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+        .page-scroll-btn.active {
+            background: #007bff;
+            color: white;
+        }
+
+    .page-arrow {
+        font-size: 24px;
+        user-select: none;
+        padding: 0 10px;
+        color: #007bff;
+    }
+
+    #pagination-scroll::-webkit-scrollbar {
+        height: 6px;
+    }
+
+    #pagination-scroll::-webkit-scrollbar-thumb {
+        background-color: #007bff;
+        border-radius: 3px;
+    }
 </style>
 
 @section Scripts {
     <script>
-        $(document).on("click", ".favorite-icon", function () {
-            var icon = $(this);
-            var id = icon.data("id");
+        document.addEventListener("DOMContentLoaded", function () {
+            const favoritesKey = "favoriteCars";
+            let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
 
-            $.post("/Favorites/Toggle", { id: id }, function () {
-                // toggle rəng
-                if (icon.hasClass("active")) {
-                    icon.removeClass("active").css("color", "grey");
+            const favoritesMenu = document.getElementById("favorites-menu-list");
+            const favoritesToggle = document.getElementById("favorites-toggle");
+
+            // --- FAVORITES LOGIC ---
+            function renderFavoritesDropdown() {
+                if (!favoritesMenu) return;
+
+                favoritesMenu.innerHTML = "";
+                if (favorites.length === 0) {
+                    favoritesMenu.innerHTML = "<li>Seçilmiş yoxdur</li>";
+                    return;
+                }
+
+                favorites.forEach(car => {
+                    favoritesMenu.insertAdjacentHTML("beforeend", `
+                        <li>
+                            <a href="/Car/Details/${car.id}" style="display:flex;align-items:center;gap:5px;text-decoration:none;color:inherit;">
+                                <img src="/images/car/${car.image}" alt="${car.name}" style="width:50px;height:30px;object-fit:cover;" />
+                                <span>${car.name}</span>
+                            </a>
+                            <span class="remove-favorite" data-id="${car.id}" style="margin-left:auto;cursor:pointer;color:red;">&times;</span>
+                        </li>
+                    `);
+                });
+
+                document.querySelectorAll(".remove-favorite").forEach(btn => {
+                    btn.addEventListener("click", function () {
+                        const id = parseInt(btn.getAttribute("data-id"));
+                        favorites = favorites.filter(f => f.id !== id);
+                        localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+                        renderFavoritesDropdown();
+                        updateCarHearts();
+                    });
+                });
+            }
+
+            function toggleFavorite(carId, name, image, iconElement) {
+                let existing = favorites.find(f => f.id === carId);
+                if (existing) {
+                    favorites = favorites.filter(f => f.id !== carId);
+                    iconElement.classList.remove("active");
                 } else {
-                    icon.addClass("active").css("color", "red");
+                    favorites.push({ id: carId, name: name, image: image });
+                    iconElement.classList.add("active");
+                }
+                localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+                renderFavoritesDropdown();
+            }
+
+            function updateCarHearts() {
+                document.querySelectorAll(".favorite-icon").forEach(icon => {
+                    const carId = parseInt(icon.getAttribute("data-id"));
+                    if (favorites.find(f => f.id === carId)) {
+                        icon.classList.add("active");
+                    } else {
+                        icon.classList.remove("active");
+                    }
+                });
+            }
+
+            document.querySelectorAll(".favorite-icon").forEach(icon => {
+                icon.addEventListener("click", function () {
+                    const card = icon.closest(".car-card");
+                    const carId = parseInt(icon.getAttribute("data-id"));
+                    const name = card.getAttribute("data-car-name");
+                    const image = card.getAttribute("data-car-image");
+                    toggleFavorite(carId, name, image, icon);
+                });
+            });
+
+            if (favoritesToggle) {
+                favoritesToggle.addEventListener("click", function (e) {
+                    e.preventDefault();
+                    favoritesMenu.style.display = (favoritesMenu.style.display === "block") ? "none" : "block";
+                });
+            }
+
+            // ✅ təhlükəsiz klik yoxlaması
+            document.addEventListener("click", function (e) {
+                if (favoritesMenu && favoritesToggle) {
+                    if (!favoritesMenu.contains(e.target) && !favoritesToggle.contains(e.target)) {
+                        favoritesMenu.style.display = "none";
+                    }
                 }
             });
+
+            renderFavoritesDropdown();
+            updateCarHearts();
+
+            // --- FILTER + PAGINATION LOGIC ---
+            function filterCars() {
+                var search = $("#search-input").val().toLowerCase();
+                var selectedCategories = $(".category-filter:checked").map(function () { return $(this).val(); }).get();
+                var minPrice = parseFloat($("#minPrice").val()) || 0;
+                var maxPrice = parseFloat($("#maxPrice").val()) || Number.MAX_VALUE;
+
+                $("#car-list .car-parent").each(function () {
+                    var card = $(this).find(".car-card");
+                    var name = card.data("car-name").toLowerCase();
+                    var categoryId = card.data("category-id").toString();
+                    var price = parseFloat(card.data("price"));
+
+                    var matchSearch = search === "" || name.includes(search);
+                    var matchCategory = selectedCategories.length === 0 || selectedCategories.includes(categoryId);
+                    var matchPrice = price >= minPrice && price <= maxPrice;
+
+                    if (matchSearch && matchCategory && matchPrice) $(this).addClass("filtered").show();
+                    else $(this).removeClass("filtered").hide();
+                });
+
+                applyPagination();
+            }
+
+            var carsPerPage = 6;
+            var currentPage = 1;
+
+            function applyPagination() {
+                var cars = $("#car-list .car-parent.filtered");
+                if (cars.length === 0) cars = $("#car-list .car-parent");
+
+                var totalPages = Math.ceil(cars.length / carsPerPage);
+                if (currentPage > totalPages) currentPage = totalPages || 1;
+
+                var start = (currentPage - 1) * carsPerPage;
+                var end = start + carsPerPage;
+
+                cars.hide().slice(start, end).show();
+
+                var scrollDiv = $("#pagination-scroll").empty();
+                for (var i = 1; i <= totalPages; i++) {
+                    var btn = $("<div class='page-scroll-btn'>" + i + "</div>");
+                    if (i === currentPage) btn.addClass("active");
+                    btn.on("click", (function (page) { return function () { currentPage = page; applyPagination(); }; })(i));
+                    scrollDiv.append(btn);
+                }
+            }
+
+            $("#pagination-prev").on("click", function () {
+                if (currentPage > 1) { currentPage--; applyPagination(); }
+            });
+
+            $("#pagination-next").on("click", function () {
+                var cars = $("#car-list .car-parent.filtered");
+                if (cars.length === 0) cars = $("#car-list .car-parent");
+                var totalPages = Math.ceil(cars.length / carsPerPage);
+                if (currentPage < totalPages) { currentPage++; applyPagination(); }
+            });
+
+            $(document).ready(function () {
+                $("#car-list .car-parent").addClass("filtered");
+                applyPagination();
+            });
+
+            $("#search-input").on("input", filterCars);
+            $(".category-filter").on("change", filterCars);
+            $("#minPrice, #maxPrice").on("input", filterCars);
         });
     </script>
+}
+
 }
