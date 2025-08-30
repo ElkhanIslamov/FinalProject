@@ -21,10 +21,12 @@ namespace RentACar.Controllers
                 Intro = _context.AboutIntros.FirstOrDefault() ?? new(),
                 Statistics = _context.Statistics.ToList(),
                 TeamMembers = _context.TeamMembers.ToList(),
-                QualityTabs = _context.QualityTabs.ToList(),
+                QualityTabItems = _context.QualityTabs.ToList(),
                 CallToAction = _context.CallToActions.FirstOrDefault() ?? new(),
                 Board = _context.DirectorsBoards.FirstOrDefault() ?? new(),
-                SubHeader = _context.SubHeaders.FirstOrDefault() ?? new()
+                SubHeader = _context.SubHeaders.FirstOrDefault() ?? new(),
+                Features =  _context.HomeFeatures.ToList(),
+                HomeFeatureSection = _context.HomeFeatureSections.ToList().FirstOrDefault() ?? new()
             };
 
             return View(vm);

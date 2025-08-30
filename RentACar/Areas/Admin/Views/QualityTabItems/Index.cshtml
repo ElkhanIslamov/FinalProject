@@ -1,0 +1,31 @@
+﻿@model IEnumerable<RentACar.DataContext.Entities.AboutPage.QualityTabItem>
+
+<h2>Quality Tabs</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">+ Yeni əlavə et</a>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>HeadTitle</th>
+            <th>Title</th>
+            <th>Content</th>
+            <th>IsActive</th>
+            <th>Əməliyyatlar</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.HeadTitle</td>
+                <td>@item.Title</td>
+                <td>@item.Content</td>
+                <td>@item.IsActive</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

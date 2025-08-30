@@ -1,0 +1,23 @@
+﻿@model RentACar.DataContext.Entities.AboutPage.QualityTabItem
+
+<h2>Yeni Tab əlavə et</h2>
+
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label>HeadTitle</label>
+        <input asp-for="HeadTitle" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Title</label>
+        <input asp-for="Title" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Content</label>
+        <textarea asp-for="Content" class="form-control"></textarea>
+    </div>
+    <div class="form-group form-check">
+        <input asp-for="IsActive" class="form-check-input" />
+        <label class="form-check-label">Is Active</label>
+    </div>
+    <button type="submit" class="btn btn-success">Yadda saxla</button>
+</form>
