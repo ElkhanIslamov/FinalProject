@@ -212,6 +212,9 @@ namespace RentACar.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("BackgroundImage")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("ButtonText")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -222,6 +225,9 @@ namespace RentACar.Migrations
 
                     b.Property<string>("Heading")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Icon")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Phone")
@@ -876,6 +882,26 @@ namespace RentACar.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("HomeVehicles");
+                });
+
+            modelBuilder.Entity("RentACar.DataContext.Entities.ProfilePage.ProfileSubHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BackgroundImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProfileSubHeaders");
                 });
 
             modelBuilder.Entity("RentACar.DataContext.Entities.Slider", b =>

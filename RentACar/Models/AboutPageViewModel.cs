@@ -1,4 +1,5 @@
-﻿using RentACar.DataContext.Entities;
+﻿using RentACar.Areas.Admin.Models;
+using RentACar.DataContext.Entities;
 using RentACar.DataContext.Entities.AboutPage;
 using Stripe.Entitlements;
 
@@ -15,6 +16,7 @@ namespace RentACar.Models
         public SubHeader SubHeader { get; set; } = new();
         public List<HomeFeature> Features { get; set; } = new();
         public HomeFeatureSection HomeFeatureSection { get; set; } = new();
+        public CallToActionViewModel callToActionViewModel { get; set; } = new();
 
     }
 }

@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentACar.DataContext;
 using RentACar.DataContext.Entities;
+using RentACar.DataContext.Entities.ProfilePage;
 using RentACar.Models;
 
 namespace RentACar.Controllers;
@@ -18,6 +19,8 @@ public class AccountController : Controller
     private readonly IMailService _mailService;
     private readonly IWebHostEnvironment _webHostEnvironment;
     private readonly AppDbContext _context;
+    
+
 
     public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMailService mailService, AppDbContext context = null)
     {
@@ -25,6 +28,7 @@ public class AccountController : Controller
         _signInManager = signInManager;
         _mailService = mailService;
         _context = context;
+       
     }
 
     public IActionResult Register()
@@ -394,27 +398,43 @@ public class AccountController : Controller
     }
     [Authorize]
     public async Task<IActionResult> Dashboard()
-     {
-         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    {
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        var user = await _userManager.FindByIdAsync(userId);
+
+        var subHeader = await _context.ProfileSubHeaders.FirstOrDefaultAsync()
+                       ?? new ProfileSubHeader
+                       {
+                           Title = "Dashboard",
+                           BackgroundImage = "/images/background/14.jpg"
+                       };
 
         var bookings = await _context.Bookings
-             .Where(b => b.UserId == userId)
-             .Include(b => b.Car)
-             .ToListAsync();
+            .Where(b => b.UserId == userId)
+            .Include(b => b.Car)
+            .ToListAsync();
 
-         var viewModelList = bookings.Select(b => new UserBookingViewModel
-         {
-             CarName = b.Car?.Name ?? b.CarType,
-             PickupLocation = b.PickupLocation,
-             DropoffLocation = b.DropoffLocation,
-             PickupDate = b.PickupDate,
-             ReturnDate = b.ReturnDate,
-             TotalPrice = b.Car != null
-                 ? ((b.ReturnDate - b.PickupDate).Days) * b.Car.PricePerDay
-                 : 0,
-             Status = b.Status
-         }).ToList();
+        var viewModel = new ProfilePageViewModel
+        {
+            SubHeader = subHeader,
+            FullName = user?.FullName ?? "",   // 🔹 buradan gəlir
+            UserBookings = bookings.Select(b => new UserBookingViewModel
+            {
+                CarName = b.Car?.Name ?? b.CarType,
+                PickupLocation = b.PickupLocation,
+                DropoffLocation = b.DropoffLocation,
+                PickupDate = b.PickupDate,
+                ReturnDate = b.ReturnDate,
+                TotalPrice = b.Car != null
+                    ? ((b.ReturnDate - b.PickupDate).Days) * b.Car.PricePerDay
+                    : 0,
+                Status = b.Status
+            }).ToList()
+        };
 
-         return View(viewModelList);
-     }
+        return View(viewModel);
+    }
+
+
+
 }

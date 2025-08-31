@@ -1,0 +1,36 @@
+﻿@model RentACar.Areas.Admin.Models.ProfileSubHeaderViewModel
+
+@{
+    ViewData["Title"] = "Edit Profile SubHeader";
+}
+
+<h2>Edit Profile SubHeader</h2>
+
+<form asp-action="Edit" enctype="multipart/form-data" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="form-group mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mb-3">
+        <label asp-for="BackgroundImageFile" class="form-label">Background Image</label>
+        <input asp-for="BackgroundImageFile" type="file" class="form-control" />
+        @if (!string.IsNullOrEmpty(Model.BackgroundImage))
+        {
+            <div class="mt-2">
+                <img src="@Model.BackgroundImage" alt="Current Background" width="200" />
+            </div>
+        }
+        <span asp-validation-for="BackgroundImageFile" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

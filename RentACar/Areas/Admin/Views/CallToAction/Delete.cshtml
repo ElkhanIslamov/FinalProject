@@ -1,0 +1,19 @@
+﻿@model RentACar.DataContext.Entities.AboutPage.CallToAction
+
+<h2>Silinsin?</h2>
+
+<div>
+    <h4>@Model.Heading</h4>
+    <p>@Model.Phone</p>
+    <p>@Model.ButtonText</p>
+    @if (!string.IsNullOrEmpty(Model.BackgroundImage))
+    {
+        <img src="@Model.BackgroundImage" width="120" />
+    }
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Sil</button>
+    <a asp-action="Index" class="btn btn-secondary">Geri</a>
+</form>

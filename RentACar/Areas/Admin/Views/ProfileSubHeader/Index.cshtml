@@ -1,0 +1,33 @@
+﻿@model IEnumerable<RentACar.DataContext.Entities.ProfilePage.ProfileSubHeader>
+
+<h2>Profile SubHeader</h2>
+<p>
+    <a href="@Url.Action("Create")" class="btn btn-primary">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Background</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.BackgroundImage))
+                    {
+                        <img src="@item.BackgroundImage" alt="bg" width="100" />
+                    }
+                </td>
+                <td>
+                    <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-warning">Edit</a>
+                    <a href="@Url.Action("Delete", new { id = item.Id })" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

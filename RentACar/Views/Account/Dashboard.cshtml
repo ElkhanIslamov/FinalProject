@@ -1,4 +1,4 @@
-﻿@model List<RentACar.Models.UserBookingViewModel>
+﻿@model RentACar.Models.ProfilePageViewModel
 
 @{
     ViewData["Title"] = "Dashboard";
@@ -6,11 +6,11 @@
 }
 
 <!-- Subheader -->
-<section id="subheader" class="jarallax text-light">
-    <img src="~/images/background/14.jpg" class="jarallax-img" alt="">
+<section id="subheader" class="jarallax text-light"
+         style="@(string.IsNullOrEmpty(Model.SubHeader.BackgroundImage) ? "" : $"background-image:url('{Model.SubHeader.BackgroundImage}'); background-size:cover; background-position:center;")">
     <div class="center-y text-center">
         <div class="container">
-            <h1 class="text-uppercase">My Dashboard</h1>
+            <h1>@Model.SubHeader.Title</h1>
         </div>
     </div>
 </section>
@@ -26,7 +26,7 @@
                     <div class="profile_avatar mb-3">
                         <img src="~/images/profile/1.jpg" alt="Avatar" class="rounded-circle" width="100">
                         <h5 class="mt-3">@User.Identity?.Name</h5>
-                        <span class="text-muted">@User.Identity?.Name</span>
+                        <span class="text-muted">@Model.FullName</span>
                     </div>
 
                     <hr />
@@ -64,9 +64,9 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if (Model != null && Model.Any())
+                                @if (Model.UserBookings != null && Model.UserBookings.Any())
                                 {
-                                    foreach (var booking in Model)
+                                    foreach (var booking in Model.UserBookings)
                                     {
                                         <tr>
                                             <td>@booking.CarName</td>

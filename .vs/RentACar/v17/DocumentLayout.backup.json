@@ -3,12 +3,20 @@
   "WorkspaceRootPath": "C:\\Users\\User\\Desktop\\RentACar\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|c:\\users\\user\\desktop\\rentacar\\rentacar\\views\\about\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
-      "RelativeMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|solutionrelative:rentacar\\views\\about\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+      "AbsoluteMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|c:\\users\\user\\desktop\\rentacar\\rentacar\\views\\account\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|solutionrelative:rentacar\\views\\account\\dashboard.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|c:\\users\\user\\desktop\\rentacar\\rentacar\\models\\aboutpageviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|solutionrelative:rentacar\\models\\aboutpageviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|c:\\users\\user\\desktop\\rentacar\\rentacar\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|solutionrelative:rentacar\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|c:\\users\\user\\desktop\\rentacar\\rentacar\\datacontext\\entities\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|solutionrelative:rentacar\\datacontext\\entities\\appuser.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|c:\\users\\user\\desktop\\rentacar\\rentacar\\models\\profilepageviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{23E01628-E772-42F9-A768-19C1AD86B404}|RentACar\\RentACar.csproj|solutionrelative:rentacar\\models\\profilepageviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -18,8 +26,21 @@
       "DocumentGroups": [
         {
           "DockedWidth": 1494,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 5,
           "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "ProfilePageViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Models\\ProfilePageViewModel.cs",
+              "RelativeDocumentMoniker": "RentACar\\Models\\ProfilePageViewModel.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Models\\ProfilePageViewModel.cs",
+              "RelativeToolTip": "RentACar\\Models\\ProfilePageViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-31T11:33:08.951Z",
+              "EditorCaption": ""
+            },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
@@ -30,28 +51,41 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AboutPageViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Models\\AboutPageViewModel.cs",
-              "RelativeDocumentMoniker": "RentACar\\Models\\AboutPageViewModel.cs",
-              "ToolTip": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Models\\AboutPageViewModel.cs",
-              "RelativeToolTip": "RentACar\\Models\\AboutPageViewModel.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAMwAsAAAAzAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "AppUser.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\DataContext\\Entities\\AppUser.cs",
+              "RelativeDocumentMoniker": "RentACar\\DataContext\\Entities\\AppUser.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\DataContext\\Entities\\AppUser.cs",
+              "RelativeToolTip": "RentACar\\DataContext\\Entities\\AppUser.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-08-30T19:22:50.289Z",
+              "WhenOpened": "2025-08-31T11:36:25.908Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "RentACar\\Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "RentACar\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAAI8BAAAAAAAAAAAzwLQBAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-31T10:55:36.689Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Index.cshtml",
-              "DocumentMoniker": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Views\\About\\Index.cshtml",
-              "RelativeDocumentMoniker": "RentACar\\Views\\About\\Index.cshtml",
-              "ToolTip": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Views\\About\\Index.cshtml",
-              "RelativeToolTip": "RentACar\\Views\\About\\Index.cshtml",
-              "ViewState": "AgIAALAAAAAAAAAAAAAQwLIAAAAqAAAAAAAAAA==",
+              "Title": "Dashboard.cshtml",
+              "DocumentMoniker": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Views\\Account\\Dashboard.cshtml",
+              "RelativeDocumentMoniker": "RentACar\\Views\\Account\\Dashboard.cshtml",
+              "ToolTip": "C:\\Users\\User\\Desktop\\RentACar\\RentACar\\Views\\Account\\Dashboard.cshtml",
+              "RelativeToolTip": "RentACar\\Views\\Account\\Dashboard.cshtml",
+              "ViewState": "AgIAABEAAAAAAAAAAAAUwBwAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
-              "WhenOpened": "2025-08-30T19:20:48.43Z",
+              "WhenOpened": "2025-08-31T10:54:03.163Z",
               "EditorCaption": ""
             }
           ]

@@ -7,6 +7,8 @@
         public string Phone { get; set; } = string.Empty;
         public string ButtonText { get; set; } = string.Empty;
         public string ButtonUrl { get; set; } = string.Empty;
+        public string? Icon { get; set; }    
+        public string? BackgroundImage { get; set; }
     }
 
 }

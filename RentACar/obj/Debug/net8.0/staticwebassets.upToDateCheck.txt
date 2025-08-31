@@ -521,6 +521,7 @@ wwwroot\lib\jquery-validation\LICENSE.md
 wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.js
 wwwroot\lib\jquery-validation-unobtrusive\jquery.validate.unobtrusive.min.js
 wwwroot\lib\jquery-validation-unobtrusive\LICENSE.txt
+wwwroot\uploads\calltoaction\3c6b459c-7d36-45f6-b33f-fb868aa440a9.jpg
 wwwroot\uploads\cf2860c1-6846-4b94-91bd-b2c81649dbef.jpg
 wwwroot\uploads\d0defab8-3e90-4979-9b0d-7b51be84f55a.jpg
 wwwroot\uploads\features\0ca377f8-a70a-428d-b603-e32f05843f36.png
@@ -540,6 +541,7 @@ wwwroot\uploads\features\c436bda3-813c-43a6-972e-564271b0aa60.png
 wwwroot\uploads\features\c73cabf1-ff2d-457f-a4d1-30c0e015d4c0.png
 wwwroot\uploads\features\c9dbb20f-0b86-4cde-bf70-0ecd04bc81c5.png
 wwwroot\uploads\features\d9a2068d-4359-4c7e-898f-3ffccd63ab0b.png
+wwwroot\uploads\profile\e99781d6-3244-4ee8-922a-b8b6ef69b5a7.jpg
 wwwroot\uploads\subheader\480c0b97-1364-4513-87ac-08c7276e1760.jpg
 wwwroot\uploads\subheader\686603e6-5d57-4e23-b02f-9fa056f80762.jpg
 wwwroot\uploads\team\282b18f2-55b9-4c18-939b-56c580a3f3d7.jpg

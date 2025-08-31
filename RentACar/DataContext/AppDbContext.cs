@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using RentACar.DataContext.Entities;
 using RentACar.DataContext.Entities.AboutPage;
+using RentACar.DataContext.Entities.ProfilePage;
 using Stripe.Entitlements;
 
 
@@ -35,6 +36,7 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<QualityTabItem> QualityTabs { get; set; }
     public DbSet<CallToAction> CallToActions { get; set; }
     public DbSet<DirectorsBoard> DirectorsBoards { get; set; }
+    public DbSet<ProfileSubHeader> ProfileSubHeaders { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
