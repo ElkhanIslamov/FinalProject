@@ -1,0 +1,178 @@
+﻿@{
+    ViewData["Title"] = "Seçilmişlər";
+}
+
+<section id="subheader" class="jarallax text-light">
+    <img src="~/images/background/2.jpg" class="jarallax-img subheader-img" alt="">
+</section>
+
+<h3 class="favorites-title">@ViewData["Title"]</h3>
+
+<div id="favorites-container" class="row"></div>
+
+<button id="clear-favorites" class="btn btn-warning mb-3 mt-3 clear-favorites-btn">
+    Bütün Seçilmişləri Təmizlə
+</button>
+
+<style>
+    /* Subheader */
+    .subheader-img {
+        height: 125px !important;
+        object-fit: cover;
+        width: 100%;
+    }
+
+    /* Başlıq və düymə sola 20px */
+    .favorites-title,
+    .clear-favorites-btn {
+        margin-left: 20px;
+    }
+
+    /* Kart */
+    .favorite-card {
+        margin-bottom: 25px;
+        display: flex;
+        justify-content: center;
+    }
+
+        .favorite-card .card {
+            width: 90%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+            .favorite-card .card:hover {
+                transform: translateY(-5px);
+            }
+
+        /* Şəkil eninə kiçildilmiş, ortada */
+        .favorite-card img {
+            width: 70%; /* eninə kiçildildi */
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin: 15px auto 0 auto;
+            display: block;
+        }
+
+        /* Kart içində mətn və düymələr */
+        .favorite-card .card-body {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .favorite-card .card-title {
+            font-size: 16px;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        /* Düymələr yan-yana və şık */
+        .favorite-card .btn-group {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+            .favorite-card .btn-group .btn {
+                flex: 1;
+                font-size: 14px;
+                padding: 8px 10px;
+                border-radius: 20px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+                transition: all 0.2s ease-in-out;
+            }
+
+        .favorite-card .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+            .favorite-card .btn-primary:hover {
+                background-color: #0056b3;
+            }
+
+        .favorite-card .btn-danger {
+            background-color: #dc3545;
+            border: none;
+        }
+
+            .favorite-card .btn-danger:hover {
+                background-color: #a71d2a;
+            }
+
+    .fa-heart.active {
+        color: red !important;
+    }
+</style>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            const favoritesKey = "favoriteCars";
+
+            function getFavorites() {
+                return JSON.parse(localStorage.getItem(favoritesKey)) || [];
+            }
+
+            function saveFavorites(favs) {
+                localStorage.setItem(favoritesKey, JSON.stringify(favs));
+            }
+
+            function renderFavoritesPage() {
+                const container = $("#favorites-container");
+                let favorites = getFavorites();
+
+                favorites = favorites.filter(f => f.id && f.name && f.image);
+                saveFavorites(favorites);
+
+                container.empty();
+                if (favorites.length === 0) {
+                    container.html("<p>Seçilmiş avtomobil yoxdur.</p>");
+                    return;
+                }
+
+                favorites.forEach(car => {
+                    container.append(`
+                        <div class="col-md-4 favorite-card" data-id="${car.id}">
+                            <div class="card">
+                                <img src="/images/car/${car.image}" alt="${car.name}">
+                                <div class="card-body">
+                                    <h5 class="card-title">${car.name}</h5>
+                                    <div class="btn-group">
+                                        <a href="/Car/Details/${car.id}" class="btn btn-primary">
+                                            Detallara Bax
+                                        </a>
+                                        <button class="btn btn-danger remove-favorite" data-id="${car.id}">
+                                            <i class="fa fa-heart active"></i> Çıxar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `);
+                });
+            }
+
+            $(document).on("click", ".remove-favorite", function () {
+                const id = parseInt($(this).data("id"));
+                let favorites = getFavorites();
+                favorites = favorites.filter(f => f.id !== id);
+                saveFavorites(favorites);
+                renderFavoritesPage();
+            });
+
+            $("#clear-favorites").on("click", function () {
+                localStorage.removeItem(favoritesKey);
+                renderFavoritesPage();
+            });
+
+            renderFavoritesPage();
+        });
+    </script>
+}

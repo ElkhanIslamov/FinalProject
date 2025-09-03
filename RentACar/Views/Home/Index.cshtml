@@ -118,7 +118,7 @@
                                         </div>
                                         <div class="d-price">
                                             Daily rate from <span>₼@item.PricePerDay.ToString("N0")</span>
-                                            <a asp-controller="booking" asp-action="QuickBooking" asp-route-id="@item.Id" class="btn-main">Rent Now</a>
+                                            <a href="/Booking/QuickBooking?carId=@item.Id&carType=@item.Name" class="btn-main btn-sm">İcarə et</a>
                                         </div>
                                     </div>
                                 </div>

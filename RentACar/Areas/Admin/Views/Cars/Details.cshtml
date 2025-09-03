@@ -67,7 +67,10 @@
 
 <div class="form-group">
     <label>Təsvir (Description):</label>
-    <textarea class="form-control" rows="5" disabled>@Model.Description</textarea>
+    <div class="form-control" style="white-space: pre-line;" disabled>
+        @Model.Description
+    </div>
 </div>
+
 
 <a asp-action="Index" class="btn btn-secondary">Geri</a>

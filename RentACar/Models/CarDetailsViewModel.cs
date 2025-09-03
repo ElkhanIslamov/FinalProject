@@ -2,6 +2,7 @@
 {
     public class CarDetailsViewModel
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string ImageUrl { get; set; } = null!;
         public List<string> AdditionalImageUrls { get; set; } = new();

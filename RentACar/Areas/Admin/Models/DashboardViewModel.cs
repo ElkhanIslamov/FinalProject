@@ -8,6 +8,6 @@ namespace RentACar.Areas.Admin.Models
         public int RentedCars { get; set; }
         public int TodaysBookings { get; set; }
         public decimal TotalRevenue { get; set; }
-        public List<BookingInfo> RecentBookings { get; set; }
+        public List<RecentBookingViewModel> RecentBookings { get; set; } = new();
     }
 }

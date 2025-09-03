@@ -8,5 +8,6 @@ namespace RentACar.Models
         public List<Category> Categories { get; set; } = new List<Category>();
         public decimal MinPrice { get; set; }
         public decimal MaxPrice { get; set; }
+        public CarsSubHeader SubHeader { get; set; } = new();
     }
 }

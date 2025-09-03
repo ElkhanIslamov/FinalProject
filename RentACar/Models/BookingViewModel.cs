@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using RentACar.DataContext.Entities;
 
 namespace RentACar.Models
 {
@@ -8,7 +9,7 @@ namespace RentACar.Models
     {
         [Required]
         public int? CarId { get; set; }
-        public required string CarType { get; set; }
+        public string CarType { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Your name is required.")]
         public string CustomerName { get; set; } = null!;
@@ -64,5 +65,6 @@ namespace RentACar.Models
                     new[] { nameof(PickupDate), nameof(ReturnDate) });
             }
         }
+        public BookingSubHeader SubHeader { get; set; } = new BookingSubHeader();
     }
 }

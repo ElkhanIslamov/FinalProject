@@ -1,20 +1,29 @@
 ﻿@model RentACar.Models.CheckoutViewModel
-@{
-    ViewData["Title"] = "Checkout";
-}
+<section id="subheader" class="jarallax text-light">
+    <img src="~/images/background/subheader.jpg" class="jarallax-img" alt="">
+    <div class="center-y relative text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <h1>Hesablama</h1>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+        </div>
+    </div>
+</section>
 
 <div class="container mt-4">
     <h2 class="text-center mb-4">Checkout</h2>
-
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow-sm p-4 text-center">
                 <h4>@Model.CarType</h4>
-                <p>Total Price: <strong>@Model.TotalPrice.ToString("0.00") AZN</strong></p>
+                <p>Ümumi məbləğ: <strong>@Model.TotalPrice.ToString("0.00") AZN</strong></p>
 
                 <form asp-action="CreateCheckoutSession" method="post">
                     <input type="hidden" name="bookingId" value="@Model.BookingId" />
-                    <button type="submit" class="btn btn-primary w-100 py-2">Pay with Card</button>
+                    <button type="submit" class="btn btn-primary w-100 py-2">Onlayn ödəmə</button>
                 </form>
             </div>
         </div>

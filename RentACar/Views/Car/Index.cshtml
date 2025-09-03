@@ -1,21 +1,22 @@
 ﻿@model RentACar.Models.CarsViewModel
 
-<div class="no-bottom no-top zebra" id="content">
-    <div id="top"></div>
+    <div class="no-bottom no-top zebra" id="content">
+        <div id="top"></div>
 
-    <!-- Header Section -->
-    <section id="subheader" class="jarallax text-light">
-        <img src="images/background/2.jpg" class="jarallax-img" alt="">
-        <div class="center-y relative text-center">
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <h1>Cars</h1>
+        <!-- Header Section -->
+        <section id="subheader" class="jarallax text-light">
+            <img src="@Model.SubHeader.BackgroundImage" class="jarallax-img" alt="">
+            <div class="center-y relative text-center">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12 text-center">
+                            <h1>@Model.SubHeader.Title</h1>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
+    </div>
 
     <!-- Filter & Car List Section -->
     <section id="section-cars">
@@ -26,15 +27,15 @@
                 <div class="col-lg-3">
                     <!-- Search -->
                     <div class="item_filter_group">
-                        <h4>Search</h4>
+                        <h4>Axtar</h4>
                         <div class="de_form">
-                            <input type="text" placeholder="Search by name..." id="search-input" class="form-control" />
+                            <input type="text" placeholder="avtomobilin adını yaz..." id="search-input" class="form-control" />
                         </div>
                     </div>
 
                     <!-- Category Filter -->
                     <div class="item_filter_group">
-                        <h4>Car Body Type</h4>
+                        <h4>Avtomobilin növü</h4>
                         <div class="de_form">
                             @foreach (var bodyType in Model.Categories)
                             {
@@ -48,9 +49,9 @@
 
                     <!-- Price Filter -->
                     <div class="item_filter_group">
-                        <h4>Price Range</h4>
-                        <input type="number" id="minPrice" placeholder="Min Price" class="form-control mb-2" />
-                        <input type="number" id="maxPrice" placeholder="Max Price" class="form-control mb-2" />
+                    <h4>Qiymət Aralığı</h4>
+                        <input type="number" id="minPrice" placeholder="Minimum qiymət" class="form-control mb-2" />
+                        <input type="number" id="maxPrice" placeholder="Maksimum qiymət" class="form-control mb-2" />
                         <div id="price-slider" style="margin-top:60px;"></div>
                     </div>
                 </div>
@@ -97,7 +98,8 @@
 
                                             <div class="d-price">
                                                 Günlük qiymət <span>₼@item.PricePerDay.ToString("N0")</span>
-                                                <a href="/Booking/QuickBooking?carId=@item.Id" class="btn-main btn-sm">Rent Now</a>
+                                            <a href="/Booking/QuickBooking?carId=@item.Id&carType=@item.Name" class="btn-main btn-sm">İcarə et</a>
+
                                             </div>
                                         </div>
                                     </div>
@@ -114,11 +116,10 @@
                     </div>
 
                 </div>
-
             </div>
         </div>
     </section>
-</div>
+
 
 <style>
     .car-card {

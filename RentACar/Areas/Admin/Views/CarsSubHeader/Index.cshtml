@@ -1,0 +1,39 @@
+﻿@model IEnumerable<RentACar.Areas.Admin.Models.CarsSubHeaderViewModel>
+
+@{
+    ViewData["Title"] = "Cars SubHeaders";
+}
+
+<h2>Cars SubHeaders</h2>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">Create New</a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Title</th>
+            <th>Background Image</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Title</td>
+                <td>
+                    @if (!string.IsNullOrEmpty(item.BackgroundImage))
+                    {
+                        <img src="@item.BackgroundImage" width="120" />
+                    }
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

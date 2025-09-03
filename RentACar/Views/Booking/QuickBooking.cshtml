@@ -3,94 +3,93 @@
 <div class="no-bottom no-top" id="content">
     <div id="top"></div>
     <!-- section begin -->
+    <!-- SubHeader Section -->
     <section id="subheader" class="jarallax text-light">
-        <img src="~/images/background/2.jpg" class="jarallax-img" alt="">
-         <div class="center-y relative text-center">
+        <img src="@(Model.SubHeader?.BackgroundImage ?? Url.Content("~/images/background/2.jpg"))" class="jarallax-img" alt="">
+        <div class="center-y relative text-center">
             <div class="container">
                 <div class="row">
                     <div class="col-md-12 text-center">
-                        <h1>Quick Booking</h1>
+                        <h1>@(string.IsNullOrEmpty(Model.SubHeader?.Title) ? "Quick Booking" : Model.SubHeader.Title)</h1>
                     </div>
                     <div class="clearfix"></div>
                 </div>
             </div>
         </div>
     </section>
+
     <section class="section-hero">
        <div class="container">
         <br>
-        <h2 class="mb-4">Quick Booking</h2>
+        <h2 class="mb-4">Məlumatları əlavə elə</h2>
 
         <form asp-controller="Booking" asp-action="QuickBooking" method="post" class="form-s2 row g-4 on-submit-hide">
             <div asp-validation-summary="All" class="text-danger"></div>
             <input type="hidden" asp-for="CarId" />
 
             <div class="col-md-6">
-                <label asp-for="CustomerName" class="form-label">Your Name</label>
+                <label asp-for="CustomerName" class="form-label">Ad və soyad</label>
                 <input asp-for="CustomerName" class="form-control" />
                 <span asp-validation-for="CustomerName" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="Email" class="form-label">Email</label>
+                <label asp-for="Email" class="form-label">Elektron ünvan</label>
                 <input asp-for="Email" class="form-control" />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="Phone" class="form-label">Phone</label>
+                <label asp-for="Phone" class="form-label">Mobil nömrə</label>
                 <input asp-for="Phone" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label class="form-label">Car Type</label>
+                <label class="form-label">Avtomobilin növü</label>
                 <input asp-for="CarType" class="form-control" />
                 <span asp-validation-for="Phone" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="PickupLocation" class="form-label">Pickup Location</label>
+                <label asp-for="PickupLocation" class="form-label">Götürmə ünvanı</label>
                 <input asp-for="PickupLocation" class="form-control" />
                 <span asp-validation-for="PickupLocation" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="DropoffLocation" class="form-label">Dropoff Location</label>
+                <label asp-for="DropoffLocation" class="form-label">Qaytarma ünvanı</label>
                 <input asp-for="DropoffLocation" class="form-control" />
                 <span asp-validation-for="DropoffLocation" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="PickupDate" class="form-label">Pickup Date</label>
+                <label asp-for="PickupDate" class="form-label">Başlanğıc günü </label>
                 <input asp-for="PickupDate" type="date" class="form-control" />
                 <span asp-validation-for="PickupDate" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="PickupTime" class="form-label">Pickup Time</label>
+                <label asp-for="PickupTime" class="form-label">Başlanğıc saatı</label>
                 <input asp-for="PickupTime" type="time" class="form-control" />
                 <span asp-validation-for="PickupTime" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="ReturnDate" class="form-label">Return Date</label>
+                <label asp-for="ReturnDate" class="form-label">Bitirmə günü</label>
                 <input asp-for="ReturnDate" type="date" class="form-control" />
                 <span asp-validation-for="ReturnDate" class="text-danger"></span>
             </div>
 
             <div class="col-md-6">
-                <label asp-for="ReturnTime" class="form-label">Return Time</label>
+                <label asp-for="ReturnTime" class="form-label">Bitirmə saatı</label>
                 <input asp-for="ReturnTime" type="time" class="form-control" />
                 <span asp-validation-for="ReturnTime" class="text-danger"></span>
             </div>
             <div class="col-12 text-end">
-                <button type="submit" class="btn btn-primary px-5">Submit Booking</button>
+                <button type="submit" class="btn btn-primary px-5">Təsdiqlə</button>
             </div>
-
-
-        </form>
-
+         </form>
     </div>
 </section>
 </div>

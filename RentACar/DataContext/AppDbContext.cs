@@ -37,7 +37,8 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<CallToAction> CallToActions { get; set; }
     public DbSet<DirectorsBoard> DirectorsBoards { get; set; }
     public DbSet<ProfileSubHeader> ProfileSubHeaders { get; set; }
-
+    public DbSet<CarsSubHeader> CarsSubHeaders { get; set; }
+    public DbSet<BookingSubHeader> BookingSubHeaders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

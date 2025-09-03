@@ -1,0 +1,23 @@
+﻿@model RentACar.Areas.Admin.Models.CarsSubHeaderViewModel
+
+@{
+    ViewData["Title"] = "Delete Cars SubHeader";
+}
+
+<h2>Delete Cars SubHeader</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+
+<div>
+    <p><strong>Title:</strong> @Model.Title</p>
+    @if (!string.IsNullOrEmpty(Model.BackgroundImage))
+    {
+        <p><img src="@Model.BackgroundImage" width="200" /></p>
+    }
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

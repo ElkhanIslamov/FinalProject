@@ -1,33 +1,68 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using RentACar.Areas.Admin.Data;
+using Microsoft.EntityFrameworkCore;
+using RentACar.DataContext;
 using RentACar.Areas.Admin.Models;
 
 namespace RentACar.Areas.Admin.Controllers
 {
-    public class DashboardController : AdminController
+    [Area("Admin")]
+    public class DashboardController : Controller
     {
-     
-        public IActionResult Index()
-        {
-            // Burada real verilənlər bazasından məlumatları çəkməlisiniz.
-            // Sadəcə nümunə üçün statik data istifadə olunur.
+        private readonly AppDbContext _dbContext;
 
-            var model = new DashboardViewModel
-            {
-                TotalCars = 120,
-                RentedCars = 45,
-                TodaysBookings = 10,
-                TotalRevenue = 35000m,
-                RecentBookings = new List<BookingInfo>
+        public DashboardController(AppDbContext dbContext)
         {
-            new BookingInfo { CustomerName="Elxan", CarName="Toyota Camry", BookingDate=DateTime.Today.AddDays(-2), ReturnDate=DateTime.Today.AddDays(3), Price=300, Status="Active" },
-            new BookingInfo { CustomerName="Aysel", CarName="BMW X5", BookingDate=DateTime.Today.AddDays(-5), ReturnDate=DateTime.Today.AddDays(-1), Price=500, Status="Completed" },
-            new BookingInfo { CustomerName="Ramin", CarName="Audi A6", BookingDate=DateTime.Today, ReturnDate=DateTime.Today.AddDays(2), Price=400, Status="Active" },
+            _dbContext = dbContext;
         }
+
+        public async Task<IActionResult> Index()
+        {
+            // Ümumi maşın sayı
+            var totalCars = await _dbContext.Cars.CountAsync();
+
+            // Hazırda icarədə olan maşınlar (status Active olanlar)
+            var rentedCars = await _dbContext.Bookings
+                .CountAsync(b => b.Status == "Active");
+
+            // Bugünkü rezervasiyalar
+            var todaysBookings = await _dbContext.Bookings
+                .CountAsync(b => b.PickupDate.Date == DateTime.Today);
+
+            // Ümumi gəlir (ReturnDate bitməyən və ya Completed olan rezervasiyalardan)
+            var totalRevenue = await _dbContext.Bookings
+                .Where(b => b.Status == "Completed" && b.Car != null)
+                .SumAsync(b =>
+                    EF.Functions.DateDiffDay(b.PickupDate, b.ReturnDate) * b.Car.PricePerDay
+                );
+
+            // Son 5 rezervasiya
+            var recentBookings = await _dbContext.Bookings
+                .Include(b => b.Car)
+                .OrderByDescending(b => b.CreatedAt)
+                .Take(5)
+                .Select(b => new RecentBookingViewModel
+                {
+                    CustomerName = b.CustomerName,
+                    CarName = b.Car != null ? b.Car.Name : b.CarType,
+                    BookingDate = b.PickupDate,
+                    ReturnDate = b.ReturnDate,
+                    Price = b.Car != null
+                        ? (EF.Functions.DateDiffDay(b.PickupDate, b.ReturnDate) * b.Car.PricePerDay)
+                        : 0,
+                    Status = b.Status
+                })
+                .ToListAsync();
+
+            var viewModel = new DashboardViewModel
+            {
+                TotalCars = totalCars,
+                RentedCars = rentedCars,
+                TodaysBookings = todaysBookings,
+                TotalRevenue = totalRevenue,
+                RecentBookings = recentBookings
             };
 
-            return View(model);
+            return View(viewModel);
         }
-
     }
 }

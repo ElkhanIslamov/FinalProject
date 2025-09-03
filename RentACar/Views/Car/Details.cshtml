@@ -9,6 +9,7 @@
         : Url.Action("Login", "Account");
     var whatsappMessage = $"Salam, {Model.Name} maşını ilə bağlı məlumat almaq istəyirəm.";
     var whatsappUrl = "https://wa.me/994559999076?text=" + Uri.EscapeDataString(whatsappMessage);
+    var cacheBuster = DateTime.Now.Ticks; // Cache problemi üçün
 }
 
 <!-- Owl Carousel və Lightbox üçün style-lar -->
@@ -42,8 +43,8 @@
                     <div id="slider-carousel" class="owl-carousel owl-theme mb-3">
                         <!-- Main image -->
                         <div class="item">
-                            <a href="@Url.Content("~/images/car/" + Model.ImageUrl)" data-lightbox="car-gallery">
-                                <img src="@Url.Content("~/images/car/" + Model.ImageUrl)" class="img-fluid rounded" alt="@Model.Name" />
+                            <a href="@Url.Content("~/images/car/" + Model.ImageUrl)?v=@cacheBuster" data-lightbox="car-gallery">
+                                <img src="@Url.Content("~/images/car/" + Model.ImageUrl)?v=@cacheBuster" class="img-fluid rounded" alt="@Model.Name" />
                             </a>
                         </div>
 
@@ -51,8 +52,8 @@
                         @foreach (var img in Model.AdditionalImageUrls)
                         {
                             <div class="item">
-                                <a href="@Url.Content("~/images/car/" + img)" data-lightbox="car-gallery">
-                                    <img src="@Url.Content("~/images/car/" + img)" class="img-fluid rounded" alt="@Model.Name" />
+                                <a href="@Url.Content("~/images/car/" + img)?v=@cacheBuster" data-lightbox="car-gallery">
+                                    <img src="@Url.Content("~/images/car/" + img)?v=@cacheBuster" class="img-fluid rounded" alt="@Model.Name" />
                                 </a>
                             </div>
                         }
@@ -62,34 +63,54 @@
                 <!-- Middle: Description and specs -->
                 <div class="col-lg-3">
                     <h3>@Model.Name</h3>
+                    <h4>Avtomobilin xüsusiyyətləri</h4>
                     <p>@Model.Description</p>
 
-                    <div class="spacer-10"></div>
-                    <h4>Specifications</h4>
-                    <div class="de-spec">
-                        <div class="d-row">
-                            <span class="d-title">Bir günlük qiymət</span>
-                            <span class="d-value">₼@Model.PricePerDay</span>
-                        </div>
-                        <!-- Əlavə texniki göstəricilər bura əlavə oluna bilər -->
-                    </div>
+                    <ul class="list-unstyled">
+                        @if (!string.IsNullOrEmpty(Model.VehicleTypeName))
+                        {
+                            <li><strong>Növ:</strong> @Model.VehicleTypeName</li>
+                        }
+                        @if (!string.IsNullOrEmpty(Model.BodyTypeName))
+                        {
+                            <li><strong>Kuzov:</strong> @Model.BodyTypeName</li>
+                        }
+                        @if (Model.Seats.HasValue)
+                        {
+                            <li><strong>Oturacaq sayı:</strong> @Model.Seats</li>
+                        }
+                        @if (Model.Doors.HasValue)
+                        {
+                            <li><strong>Qapı sayı:</strong> @Model.Doors</li>
+                        }
+                        @if (Model.Luggage.HasValue)
+                        {
+                            <li><strong>Bağaj həcmi:</strong> @Model.Luggage</li>
+                        }
+                    </ul>
+
+                    <p class="text-danger">
+                        Qiymətə cərimələr və parklama aid deyil !!!
+                    </p>
                 </div>
 
                 <!-- Right side: Booking panel -->
                 <div class="col-lg-3">
                     <div class="de-price text-center">
-                        Daily rate
-                        <h3>₼@Model.PricePerDay</h3>
+                        Bir günlük qiymət
+                        <h4>₼@Model.PricePerDay</h4>
                     </div>
 
                     <div class="spacer-30"></div>
 
                     <div class="de-box text-light mb25">
-                        <h4>Booking this car</h4>
                         <div class="spacer-20"></div>
 
                         <div class="col-lg-12 mb20">
-                            <a href="@bookUrl" class="btn-main btn-fullwidth text-center d-block">Book Now</a>
+                            <a href="@Url.Action("QuickBooking", "Booking", new { carId = Model.Id, carType = Model.Name })"
+                               class="btn-main btn-fullwidth text-center d-block">
+                                İcarə et
+                            </a>
                         </div>
 
                         <div class="col-lg-12 mb20">
@@ -98,7 +119,7 @@
                     </div>
 
                     <div class="de-box">
-                        <h4>Share</h4>
+                        <h4>Sosial şəbəkələrimiz</h4>
                         <div class="de-color-icons">
                             <span><i class="fa fa-twitter fa-lg"></i></span>
                             <span><i class="fa fa-facebook fa-lg"></i></span>

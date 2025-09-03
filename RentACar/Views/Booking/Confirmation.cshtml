@@ -11,11 +11,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <div class="card shadow-sm p-4 text-center">
-                        <h2 class="mb-3">Booking Confirmed!</h2>
-                        <p class="lead">Thank you, <strong>@Model.CustomerName</strong></p>
-
+                        <h2 class="mb-3">Ödəniş uğurla həyata keçdi!</h2>
+                        <p class="lead">Təşəkkür edirik, <strong>@Model.CustomerName</strong></p>
                         <hr />
-
                         <div class="text-start mt-3">
                             <p><strong>Car:</strong> @Model.CarType</p>
                             <p><strong>Pickup:</strong> @Model.PickupLocation @Model.PickupDate.ToString("dd MMM yyyy") @Model.PickupTime</p>
@@ -26,7 +24,7 @@
                         <hr />
 
                         <a href="@Url.Action("Index", "Home")" class="btn btn-primary mt-3 w-100">
-                            Back to Home
+							Ana Səhifəyə Qayıt
                         </a>
                     </div>
                 </div>

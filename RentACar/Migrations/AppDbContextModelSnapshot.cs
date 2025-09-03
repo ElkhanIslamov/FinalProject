@@ -511,6 +511,26 @@ namespace RentACar.Migrations
                     b.ToTable("Bookings");
                 });
 
+            modelBuilder.Entity("RentACar.DataContext.Entities.BookingSubHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BackgroundImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookingSubHeaders");
+                });
+
             modelBuilder.Entity("RentACar.DataContext.Entities.Car", b =>
                 {
                     b.Property<int>("Id")
@@ -575,6 +595,26 @@ namespace RentACar.Migrations
                     b.HasIndex("CarId");
 
                     b.ToTable("CarImages");
+                });
+
+            modelBuilder.Entity("RentACar.DataContext.Entities.CarsSubHeader", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("BackgroundImage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CarsSubHeaders");
                 });
 
             modelBuilder.Entity("RentACar.DataContext.Entities.Category", b =>

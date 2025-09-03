@@ -57,6 +57,16 @@
             <nav class="sidebar sidebar-offcanvas" id="sidebar">
                 <ul class="nav">
                     <li class="nav-item">
+                        <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
+                            <i class="mdi mdi-home menu-icon"></i>
+                            <span class="menu-title">Dashboard</span>
+                        </a>
+                        <a class="nav-link" asp-controller="ProfileSubHeader" asp-action="Index">
+                            <i class="mdi mdi-home menu-icon"></i>
+                            <span class="menu-title">ProfileSubHeader</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-link collapsed" data-bs-toggle="collapse" href="#sectionsMenu" role="button" aria-expanded="false" aria-controls="sectionsMenu">
                             <i class="mdi mdi-view-dashboard menu-icon"></i>
                             <span class="menu-title">HomeSections</span>
@@ -113,17 +123,7 @@
                                 </li>
                             </ul>
                         </div>                       
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-controller="Dashboard" asp-action="Index">
-                            <i class="mdi mdi-home menu-icon"></i>
-                            <span class="menu-title">Dashboard</span>
-                        </a>
-                        <a class="nav-link" asp-controller="ProfileSubHeader" asp-action="Index">
-                            <i class="mdi mdi-home menu-icon"></i>
-                            <span class="menu-title">ProfileSubHeader</span>
-                        </a>
-                    </li>
+                    </li>                    
                     <li class="nav-item">
                         <a class="nav-link" asp-controller="Users" asp-action="Index">
                             <i class="mdi mdi-account-multiple menu-icon"></i>
@@ -137,16 +137,24 @@
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="CarsSubHeader" asp-action="Index">
+                            <i class="mdi mdi-view-list menu-icon"></i>
+                            <span class="menu-title">CarsSubHeader</span>
+                        </a>
                         <a class="nav-link" asp-area="Admin" asp-controller="Cars" asp-action="Index">
                             <i class="mdi mdi-view-list menu-icon"></i>
                             <span class="menu-title">Cars</span>
                         </a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-link" asp-area="Admin" asp-controller="BookingSubHeader" asp-action="Index">
+                            <i class="mdi mdi-view-list menu-icon"></i>
+                            <span class="menu-title">BookingSubHeader</span>
+                        </a>
                         <a class="nav-link" asp-area="Admin" asp-controller="Booking" asp-action="Index">
                             <i class="mdi mdi-view-list menu-icon"></i>
                             <span class="menu-title">Bookings</span>
-                        </a>
+                        </a>                       
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="Admin" asp-controller="HeaderInfo" asp-action="Index">
