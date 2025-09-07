@@ -12,8 +12,11 @@
                     <a href="mailto:@Model.Email"><i class="fa fa-envelope"></i> @Model.Email</a>
                 </div>
                 <div class="topbar-widget">
-                    <i class="fa fa-clock-o"></i> @Model.WorkingTime.ToString("HH:mm")
+                    <i class="fa fa-clock-o"></i>
+                    @TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow,
+                    TimeZoneInfo.FindSystemTimeZoneById("Azerbaijan Standard Time")).ToString("HH:mm")
                 </div>
+
             </div>
             <div class="topbar-right">
                 <div class="social-icons">
