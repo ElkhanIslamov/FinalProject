@@ -134,114 +134,85 @@
         }
 </style>
 <script>
-<!-- Seçilmişlər JS -->
-document.addEventListener("DOMContentLoaded", function () {
-    const favoritesKey = "favoriteCars";
-    let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+    document.addEventListener("DOMContentLoaded", function () {
+        const favoritesKey = "favoriteCars";
+        let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
 
-    const favoritesMenu = document.getElementById("favorites-menu-list");
-    const favoritesToggle = document.getElementById("favorites-toggle");
-    if (!favoritesMenu || !favoritesToggle) return;
+        const favoritesMenu = document.getElementById("favorites-menu-list");
+        const favoritesToggle = document.getElementById("favorites-toggle");
 
-    function renderFavoritesDropdown() {
-        favoritesMenu.innerHTML = "";
-        if (favorites.length === 0) {
-            favoritesMenu.innerHTML = "
-<li>Seçilmiş yoxdur</li>";
-            return;
+        function renderFavoritesDropdown() {
+            favoritesMenu.innerHTML = "";
+            if (favorites.length === 0) {
+                favoritesMenu.innerHTML = "<li>Seçilmiş yoxdur</li>";
+                return;
+            }
+
+            favorites.forEach(car => {
+                favoritesMenu.insertAdjacentHTML("beforeend", `
+    <li>
+        <a href="/Car/Details/${car.id}" style="display:flex;align-items:center;gap:5px;text-decoration:none;color:inherit;">
+            <img src="/images/car/${car.image}" alt="${car.name}" style="width:50px;height:30px;object-fit:cover;" />
+            <span>${car.name}</span>
+        </a>
+        <span class="remove-favorite" data-id="${car.id}">×</span>
+    </li>
+                `);
+            });
+
+            favoritesMenu.querySelectorAll(".remove-favorite").forEach(btn => {
+                btn.addEventListener("click", function () {
+                    const id = parseInt(btn.getAttribute("data-id"));
+                    favorites = favorites.filter(f => f.id !== id);
+                    localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+                    renderFavoritesDropdown();
+                    updateHeartIcons();
+                });
+            });
         }
-        favorites.forEach(car => {
-            favoritesMenu.insertAdjacentHTML("beforeend", `
-<li>
-    <a href="/Car/Details/${car.id}" style="display:flex;align-items:center;gap:5px;text-decoration:none;color:inherit;">
-        <img src="/images/car/${car.image}" alt="${car.name}" style="width:50px;height:30px;object-fit:cover;" />
-        <span>${car.name}</span>
-    </a>
-    <span class="remove-favorite" data-id="${car.id}">×</span>
-</li>
-            `);
+
+        favoritesToggle.addEventListener("click", function (e) {
+            e.preventDefault();
+            favoritesMenu.style.display = (favoritesMenu.style.display === "block") ? "none" : "block";
         });
 
-        favoritesMenu.querySelectorAll(".remove-favorite").forEach(btn => {
-            btn.addEventListener("click", function () {
-                const id = parseInt(btn.getAttribute("data-id"));
-                favorites = favorites.filter(f => f.id !== id);
+        document.addEventListener("click", function (e) {
+            if (!favoritesMenu.contains(e.target) && !favoritesToggle.contains(e.target)) {
+                favoritesMenu.style.display = "none";
+            }
+        });
+
+        // Toggle favorite on Car page
+        document.body.addEventListener("click", function (e) {
+            if (e.target.classList.contains("favorite-icon")) {
+                const icon = e.target;
+                const card = icon.closest(".car-card");
+                const carId = parseInt(icon.dataset.id);
+                const name = card.dataset.carName;
+                const image = card.dataset.carImage;
+
+                const existing = favorites.find(f => f.id === carId);
+                if (existing) {
+                    favorites = favorites.filter(f => f.id !== carId);
+                    icon.classList.remove("active");
+                } else {
+                    favorites.push({ id: carId, name, image });
+                    icon.classList.add("active");
+                }
                 localStorage.setItem(favoritesKey, JSON.stringify(favorites));
                 renderFavoritesDropdown();
-                renderFavoritesPage?.();
-                updateHeartIcons();
-            });
-        });
-    }
-
-    favoritesToggle.addEventListener("click", function (e) {
-        e.preventDefault();
-        favoritesMenu.style.display = (favoritesMenu.style.display === "block") ? "none" : "block";
-    });
-
-    document.addEventListener("click", function (e) {
-        if (!favoritesMenu.contains(e.target) && !favoritesToggle.contains(e.target)) {
-            favoritesMenu.style.display = "none";
-        }
-    });
-
-    // **Delegasiya ilə klik** – dynamic car-card-lar üçün
-    document.body.addEventListener("click", function (e) {
-        if (e.target.classList.contains("favorite-icon")) {
-            const icon = e.target;
-            const card = icon.closest(".car-card");
-            const carId = parseInt(icon.dataset.id);
-            const name = card.dataset.carName;
-            const image = card.dataset.carImage;
-
-            const existing = favorites.find(f => f.id === carId);
-            if (existing) {
-                favorites = favorites.filter(f => f.id !== carId);
-                icon.classList.remove("active");
-            } else {
-                favorites.push({ id: carId, name, image });
-                icon.classList.add("active");
             }
-            localStorage.setItem(favoritesKey, JSON.stringify(favorites));
-            renderFavoritesDropdown();
+        });
+
+        function updateHeartIcons() {
+            document.querySelectorAll(".favorite-icon").forEach(icon => {
+                const carId = parseInt(icon.dataset.id);
+                if (favorites.some(f => f.id === carId)) icon.classList.add("active");
+                else icon.classList.remove("active");
+            });
         }
+
+        renderFavoritesDropdown();
+        updateHeartIcons();
     });
-
-    function updateHeartIcons() {
-        document.querySelectorAll(".favorite-icon").forEach(icon => {
-            const carId = parseInt(icon.dataset.id);
-            if (favorites.some(f => f.id === carId)) icon.classList.add("active");
-            else icon.classList.remove("active");
-        });
-    }
-
-    window.renderFavoritesPage = function () {
-        const container = document.getElementById("favorites-container");
-        if (!container) return;
-        container.innerHTML = "";
-        if (favorites.length === 0) {
-            container.innerHTML = "<p>Seçilmiş avtomobil yoxdur.</p>";
-            return;
-        }
-        favorites.forEach(car => {
-            container.insertAdjacentHTML("beforeend", `
-        <div class="col-md-4 favorite-card" data-id="${car.id}">
-            <div class="card">
-                <img src="/images/car/${car.image}" class="card-img-top" alt="${car.name}">
-                <div class="card-body">
-                    <h5 class="card-title">${car.name}</h5>
-                    <button class="btn btn-danger remove-favorite" data-id="${car.id}">
-                        <i class="fa fa-heart active"></i> Seçimdən çıxar
-                    </button>
-                </div>
-            </div>
-        </div>
-            `);
-        });
-    };
-
-    renderFavoritesDropdown();
-    updateHeartIcons();
-});
-
 </script>

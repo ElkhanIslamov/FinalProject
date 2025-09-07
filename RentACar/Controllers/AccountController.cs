@@ -41,9 +41,26 @@ public class AccountController : Controller
     {
         if (!ModelState.IsValid)
         {
-            return View();
+            return View(registerViewModel);
         }
 
+        // 🔹 Email mövcudluğunu yoxla
+        var existingEmailUser = await _userManager.FindByEmailAsync(registerViewModel.Email);
+        if (existingEmailUser != null)
+        {
+            ModelState.AddModelError("Email", "Bu email artıq istifadə olunur.");
+            return View(registerViewModel);
+        }
+
+        // 🔹 Username mövcudluğunu yoxla
+        var existingUserName = await _userManager.FindByNameAsync(registerViewModel.Username);
+        if (existingUserName != null)
+        {
+            ModelState.AddModelError("Username", "Bu istifadəçi adı artıq mövcuddur.");
+            return View(registerViewModel);
+        }
+
+        // 🔹 Əgər hər şey qaydasındadırsa, yeni user yarat
         var user = new AppUser
         {
             UserName = registerViewModel.Username,
@@ -59,69 +76,70 @@ public class AccountController : Controller
             {
                 ModelState.AddModelError("", error.Description);
             }
-
-            return View();
+            return View(registerViewModel);
         }
 
+        // 🔹 Email təsdiqləmə linki yarat
         var emailConfirmToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-        var emailConfirmLink = Url.Action("ConfirmEmail", "Account", new { emailConfirmToken, user.UserName }, Request.Scheme, Request.Host.ToString());
+        var emailConfirmLink = Url.Action("ConfirmEmail", "Account",
+            new { emailConfirmToken, user.UserName },
+            Request.Scheme, Request.Host.ToString());
 
+        // 🔹 Sənin HTML şablonun
         var htmlBody = $@"
-          <html>
-            <body style=""font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f0f2f5; padding: 40px 0; margin: 0;"">
-              <div style=""max-width: 580px; margin: auto; background: #fff; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); padding: 35px;"">
-      
-                   <h1 style=""color: #222; font-weight: 700; font-size: 28px; text-align: center; margin-bottom: 20px;"">
-                      Email ünvanınızı təsdiqləyin
-                   </h1>
-      
-               <p style=""font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 25px;"">
-                  Salam,<br />
-                  Email ünvanınızı təsdiqləmək üçün aşağıdakı düyməyə klikləyin.
-               </p>
-      
-             <div style=""text-align: center; margin-bottom: 40px;"">
-                  <a href=""{emailConfirmLink}"" 
-                    style=""background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
-                  color: #fff;
-                  font-weight: 600;
-                  padding: 14px 50px;
-                  border-radius: 50px;
-                  text-decoration: none;
-                  font-size: 18px;
-                  box-shadow: 0 6px 15px rgba(101, 41, 255, 0.4);
-                  display: inline-block;
-                  transition: background 0.3s ease;"">
-          Email ünvanınızı təsdiqləyin
-         </a>
-         </div>
-      
-          <p style=""font-size: 14px; color: #888; margin-bottom: 30px; text-align: center;"">
-          Əgər bu sorğunu siz göndərməmisinizsə, bu emaili nəzərə almayın.
-          </p>
-      
-          <hr style=""border: none; border-top: 1px solid #eee; margin-bottom: 30px;"" />
-      
-         <div style=""text-align: center;"">
-        <a href=""https://facebook.com/yourpage"" style=""margin: 0 8px; text-decoration: none;"">
-          <img src=""https://cdn-icons-png.flaticon.com/24/733/733547.png"" alt=""Facebook"" />
-        </a>
-        <a href=""https://twitter.com/yourpage"" style=""margin: 0 8px; text-decoration: none;"">
-          <img src=""https://cdn-icons-png.flaticon.com/24/733/733579.png"" alt=""Twitter"" />
-        </a>
-        <a href=""https://instagram.com/yourpage"" style=""margin: 0 8px; text-decoration: none;"">
-          <img src=""https://cdn-icons-png.flaticon.com/24/733/733558.png"" alt=""Instagram"" />
-        </a>
-      </div>
-      
-      <p style=""font-size: 13px; color: #bbb; text-align: center; margin-top: 30px;"">
-        © 2025 Rentaly. Bütün hüquqlar qorunur.
-      </p>
-      
-    </div>
-  </body>
-</html>";
+    <html>
+      <body style=""font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #f0f2f5; padding: 40px 0; margin: 0;"">
+        <div style=""max-width: 580px; margin: auto; background: #fff; border-radius: 12px; box-shadow: 0 8px 20px rgba(0,0,0,0.1); padding: 35px;"">
 
+             <h1 style=""color: #222; font-weight: 700; font-size: 28px; text-align: center; margin-bottom: 20px;"">
+                Email ünvanınızı təsdiqləyin
+             </h1>
+
+         <p style=""font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 25px;"">
+            Salam,<br />
+            Email ünvanınızı təsdiqləmək üçün aşağıdakı düyməyə klikləyin.
+         </p>
+
+       <div style=""text-align: center; margin-bottom: 40px;"">
+            <a href=""{emailConfirmLink}"" 
+              style=""background: linear-gradient(90deg, #6a11cb 0%, #2575fc 100%);
+            color: #fff;
+            font-weight: 600;
+            padding: 14px 50px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-size: 18px;
+            box-shadow: 0 6px 15px rgba(101, 41, 255, 0.4);
+            display: inline-block;
+            transition: background 0.3s ease;"">
+    Email ünvanınızı təsdiqləyin
+   </a>
+   </div>      
+        <p style=""font-size: 14px; color: #888; margin-bottom: 30px; text-align: center;"">
+        Əgər bu sorğunu siz göndərməmisinizsə, bu emaili nəzərə almayın.
+        </p>
+
+        <hr style=""border: none; border-top: 1px solid #eee; margin-bottom: 30px;"" />
+
+       <div style=""text-align: center;"">
+      <a href=""https://facebook.com/yourpage"" style=""margin: 0 8px; text-decoration: none;"">
+        <img src=""https://cdn-icons-png.flaticon.com/24/733/733547.png"" alt=""Facebook"" />
+      </a>
+      <a href=""https://twitter.com/yourpage"" style=""margin: 0 8px; text-decoration: none;"">
+        <img src=""https://cdn-icons-png.flaticon.com/24/733/733579.png"" alt=""Twitter"" />
+      </a>
+      <a href=""https://instagram.com/yourpage"" style=""margin: 0 8px; text-decoration: none;"">
+        <img src=""https://cdn-icons-png.flaticon.com/24/733/733558.png"" alt=""Instagram"" />
+      </a>
+    </div>
+
+    <p style=""font-size: 13px; color: #bbb; text-align: center; margin-top: 30px;"">
+      © 2025 Rentaly. Bütün hüquqlar qorunur.
+    </p>
+
+  </div>
+</body>
+</html>";
 
         try
         {
@@ -132,21 +150,21 @@ public class AccountController : Controller
                 HtmlBody = htmlBody
             });
         }
-        catch (Exception ex)
+        catch
         {
-            // Log error (optional): _logger.LogError(ex, "Email send failed");
-            TempData["EmailError"] = "Email could not be sent. Please try again later.";
-            // Optionally show message or continue without breaking
+            TempData["EmailError"] = "Email göndərilmədi. Zəhmət olmasa sonra yenidən cəhd edin.";
         }
 
         return RedirectToAction(nameof(Login));
     }
+
 
     public IActionResult Login()
     {
         return View();
     }
 
+    
     [HttpPost]
     public async Task<IActionResult> Login(LoginViewModel loginViewModel)
     {
@@ -167,7 +185,7 @@ public class AccountController : Controller
         var isEmailConfirmed = await _userManager.IsEmailConfirmedAsync(existUser);
         if (!isEmailConfirmed)
         {
-            ModelState.AddModelError("", "Email not confirmed");
+            ModelState.AddModelError("", "Email ünvanı təsdiq edin!");
             return View();
         }
 
@@ -196,6 +214,23 @@ public class AccountController : Controller
         }
 
         return RedirectToAction("Dashboard", "Account");
+    }
+    [HttpPost]
+    public async Task<IActionResult> SyncFavorites([FromBody] List<int> carIds)
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user == null) return Unauthorized();
+
+        foreach (var carId in carIds)
+        {
+            if (!_context.FavoriteCars.Any(f => f.UserId == user.Id && f.CarId == carId))
+            {
+                _context.FavoriteCars.Add(new FavoriteCar { UserId = user.Id, CarId = carId });
+            }
+        }
+        await _context.SaveChangesAsync();
+
+        return Ok();
     }
 
     [HttpPost]

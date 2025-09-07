@@ -39,6 +39,8 @@ public class AppDbContext:IdentityDbContext<AppUser>
     public DbSet<ProfileSubHeader> ProfileSubHeaders { get; set; }
     public DbSet<CarsSubHeader> CarsSubHeaders { get; set; }
     public DbSet<BookingSubHeader> BookingSubHeaders { get; set; }
+    public DbSet<FavoriteCar> FavoriteCars { get; set; }
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

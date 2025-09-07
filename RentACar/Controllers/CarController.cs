@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RentACar.Areas.Admin.Models;
@@ -123,7 +125,11 @@ public class CarController : Controller
             ImageUrl = car.ImageUrl,
             PricePerDay = car.PricePerDay,
             Description = car.Description,
-            AdditionalImageUrls = car.Images?.Select(img => img.ImageUrl).ToList() ?? new List<string>()
+            AdditionalImageUrls = car.Images != null
+            ? car.Images.Where(i => !string.IsNullOrEmpty(i.ImageUrl))
+                    .Select(i => i.ImageUrl)
+                    .ToList()
+            : new List<string>()
         };
 
         return View(viewModel);
@@ -133,5 +139,8 @@ public class CarController : Controller
         // Bu səhifə JS ilə localStorage-dan seçilmiş avtomobilləri göstərir
         return View();
     }
+
+   
+
 
 }

@@ -1,58 +1,79 @@
 ﻿<!DOCTYPE html>
 <html lang="zxx">
 <head>
-    <title>Rentaly - Multipurpose Vehicle Car Rental Website Template</title>
-    <link rel="icon" href="~/images/icon.png" type="image/gif" sizes="16x16">
-    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <meta content="Rentaly - Multipurpose Vehicle Car Rental Website Template" name="description">
-    <meta content="" name="keywords">
-    <meta content="" name="author">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentaly - Car Rental Website</title>
+    <link rel="icon" href="~/images/icon.png" type="image/png">
 
-    <!-- Bootstrap 5 CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT1w4K68vbdEjh4u/nQ1clHT" crossorigin="anonymous">
-
-    <!-- Bootstrap Icons CDN -->
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- CSS Files -->
-    <link href="~/css/bootstrap.min.css" rel="stylesheet" type="text/css" id="bootstrap">
-    <link href="~/css/mdb.min.css" rel="stylesheet" type="text/css" id="mdb">
-    <link href="~/css/plugins.css" rel="stylesheet" type="text/css">
-    <link href="~/css/style.css" rel="stylesheet" type="text/css">
-    <link href="~/css/coloring.css" rel="stylesheet" type="text/css">
-    <link id="colors" href="~/css/colors/scheme-01.css" rel="stylesheet" type="text/css">
+    <!-- Custom CSS -->
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/mdb.min.css" rel="stylesheet" />
+    <link href="~/css/plugins.css" rel="stylesheet" />
+    <link href="~/css/style.css" rel="stylesheet" />
+    <link href="~/css/coloring.css" rel="stylesheet" />
+    <link id="colors" href="~/css/colors/scheme-01.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/lightbox2@2/dist/css/lightbox.min.css" rel="stylesheet" />
+    <link href="~/css/owl.carousel.min.css" rel="stylesheet" />
+    <link href="~/css/owl.theme.default.min.css" rel="stylesheet" />
 </head>
-
-<body onload="initialize()">
+<body onload="initialize()" data-auth="@(User.Identity.IsAuthenticated.ToString().ToLower())">
     <div id="wrapper">
 
-        <!-- page preloader begin -->
+        <!-- Page Preloader -->
         <div id="de-preloader"></div>
-        <!-- page preloader close -->
-        <!-- header begin -->
-        @await Component.InvokeAsync("Header")
-        @RenderBody()
-        <a href="~/#" id="back-to-top"></a>
-        <!-- footer begin -->
-        @await Component.InvokeAsync("Footer")
-        <!-- footer close -->
-    </div> 
 
-    <!-- JS Files -->
-    <script data-cfasync="false" src="~/../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+        <!-- Header -->
+        @await Component.InvokeAsync("Header")
+
+        <!-- Main Content -->
+        @RenderBody()
+
+        <!-- Back to Top -->
+        <a href="~/#" id="back-to-top"></a>
+
+        <!-- Footer -->
+        @await Component.InvokeAsync("Footer")
+    </div>
+
+    <!-- JS Plugins -->
     <script src="~/js/plugins.js"></script>
     <script src="~/js/designesia.js"></script>
 
-    <!-- Bootstrap Bundle JS CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoFgdf+ZNH9+pgoC2Z6kzFQ3zMN3z4wN5V7bnXl0WGMjGak" crossorigin="anonymous"></script>
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <script src="~/https://maps.googleapis.com/maps/api/js?key=AIzaSyDgiM7ogCAA2Y5pgSk2KXZfxF5S_1jsptA&amp;libraries=places&amp;callback=initPlaces" async defer></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="~/css/owl.carousel.min.css" />
-    <link rel="stylesheet" href="~/css/owl.theme.default.min.css" />
+    <!-- Google Maps API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDgiM7ogCAA2Y5pgSk2KXZfxF5S_1jsptA&libraries=places&callback=initPlaces" async defer></script>
+
+    <!-- Lightbox JS -->
     <script src="https://cdn.jsdelivr.net/npm/lightbox2@2/dist/js/lightbox.min.js"></script>
+
+    <!-- Favorites Sync Script -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const isLoggedIn = document.body.getAttribute("data-auth") === "true";
+
+            // Login olunubsa və localStorage favoritləri varsa → DB-yə göndər
+            if (isLoggedIn && localStorage.getItem("favoriteCars")) {
+                const favorites = JSON.parse(localStorage.getItem("favoriteCars"));
+                if (favorites.length > 0) {
+                    fetch("/Favorites/SyncFavorites", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(favorites.map(f => f.id))
+                    }).then(() => {
+                        localStorage.removeItem("favoriteCars");
+                    });
+                }
+            }
+        });
+    </script>
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

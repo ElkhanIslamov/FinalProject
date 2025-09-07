@@ -1,93 +1,30 @@
-﻿@{
-    ViewData["Title"] = "Seçilmişlər";
-}
+﻿@model List<RentACar.DataContext.Entities.FavoriteCar>
 
 <h2>Seçilmişlər</h2>
 
-<div id="favorites-container" class="row"></div>
-
-<button id="clear-favorites" class="btn btn-warning mb-3 mt-3">Bütün Seçilmişləri Təmizlə</button>
-
-<style>
-    .favorite-card {
-        margin-bottom: 15px;
-    }
-
-        .favorite-card img {
-            width: 100%;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 5px;
+@if (Model.Any())
+{
+    <div class="row">
+        @foreach (var fav in Model)
+        {
+            <div class="col-md-4 mb-3">
+                <div class="card">
+                    <img src="@fav.Car.ImageUrl" class="card-img-top" alt="@fav.Car.Name" />
+                    <div class="card-body">
+                        <h5 class="card-title">@fav.Car.Name</h5>
+                        <p class="card-text">@fav.Car.PricePerDay.ToString("0.00") ₼ / gün</p>
+                        <form asp-action="Remove" asp-route-carId="@fav.CarId" method="post">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="bi bi-heart-fill"></i> Sil
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
         }
-
-    .fa-heart.active {
-        color: red !important;
-    }
-</style>
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            const favoritesKey = "favoriteCars";
-
-            function getFavorites() {
-                return JSON.parse(localStorage.getItem(favoritesKey)) || [];
-            }
-
-            function saveFavorites(favs) {
-                localStorage.setItem(favoritesKey, JSON.stringify(favs));
-            }
-
-            window.renderFavoritesPage = function () {
-                const container = $("#favorites-container");
-                let favorites = getFavorites();
-
-                // undefined obyektləri sil
-                favorites = favorites.filter(f => f.id && f.name && f.image);
-                saveFavorites(favorites);
-
-                container.empty();
-                if (favorites.length === 0) {
-                    container.html("<p>Seçilmiş avtomobil yoxdur.</p>");
-                    return;
-                }
-
-                favorites.forEach(car => {
-                    container.append(`
-                        <div class="col-md-4 favorite-card" data-id="${car.id}">
-                            <div class="card">
-                                <img src="/images/car/${car.image}" class="card-img-top" alt="${car.name}">
-                                <div class="card-body">
-                                    <h5 class="card-title">${car.name}</h5>
-                                    <a href="/Car/Details/${car.id}" class="btn btn-primary mb-2">
-                                        Detallara Bax
-                                    </a>
-                                    <button class="btn btn-danger remove-favorite" data-id="${car.id}">
-                                        <i class="fa fa-heart active"></i> Seçimdən çıxar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `);
-                });
-            };
-
-            // Silmək
-            $(document).on("click", ".remove-favorite", function () {
-                const id = parseInt($(this).data("id"));
-                let favorites = getFavorites();
-                favorites = favorites.filter(f => f.id !== id);
-                saveFavorites(favorites);
-                renderFavoritesPage();
-            });
-
-            // Bütününü silmək
-            $("#clear-favorites").on("click", function () {
-                localStorage.removeItem(favoritesKey);
-                renderFavoritesPage();
-            });
-
-            renderFavoritesPage();
-        });
-    </script>
+    </div>
+}
+else
+{
+    <p>Seçilmiş avtomobil yoxdur.</p>
 }

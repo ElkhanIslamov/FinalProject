@@ -49,13 +49,21 @@
                         </div>
 
                         <!-- Additional images -->
-                        @foreach (var img in Model.AdditionalImageUrls)
+                        @if (Model.AdditionalImageUrls != null && Model.AdditionalImageUrls.Any())
                         {
-                            <div class="item">
-                                <a href="@Url.Content("~/images/car/" + img)?v=@cacheBuster" data-lightbox="car-gallery">
-                                    <img src="@Url.Content("~/images/car/" + img)?v=@cacheBuster" class="img-fluid rounded" alt="@Model.Name" />
-                                </a>
-                            </div>
+                            int index = 2; // Main image artıq 1-ci şəkildir
+                            foreach (var img in Model.AdditionalImageUrls)
+                            {
+                                var safeImg = string.IsNullOrEmpty(img) ? "placeholder.jpg" : img;
+                                var altText = string.IsNullOrEmpty(img) ? $"Şəkil {index}" : Model.Name;
+                                <div class="item">
+                                    <a href="@Url.Content("~/images/car/" + safeImg)?v=@cacheBuster" data-lightbox="car-gallery">
+                                        <img src="@Url.Content("~/images/car/" + safeImg)?v=@cacheBuster"
+                                             class="img-fluid rounded" alt="@altText" />
+                                    </a>
+                                </div>
+                                index++;
+                            }
                         }
                     </div>
                 </div>

@@ -71,7 +71,7 @@
 
                                     <a href="@Url.Action("Details", "Car", new { id = item.Id })">
                                         <div class="d-img">
-                                            <img src="images/car/@item.ImageUrl" class="img-fluid" alt="@item.Name">
+                                           <img src="@Url.Content("~/images/car/" + item.ImageUrl)" class="img-fluid" alt="@item.Name">
                                         </div>
                                     </a>
 

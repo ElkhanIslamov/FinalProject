@@ -31,8 +31,8 @@
 
                     <hr />
                     <ul class="menu-col list-unstyled text-start">
-                        <li><a class="active"><i class="fa fa-home me-2"></i>Dashboard</a></li>
-                        <li><a asp-controller="Account" asp-action="ChangePassword"><i class="fa fa-key me-2"></i>Change Password</a></li>
+                        <li><a class="active" asp-controller="Home" asp-action="index"><i class="fa fa-home me-2"></i>Ana səhifə</a></li>
+                        <li><a asp-controller="Account" asp-action="ChangePassword"><i class="fa fa-key me-2"></i>Parolu dəyiş</a></li>
                         <li>
                             <form asp-controller="Account" asp-action="Logout" method="post">
                                 @Html.AntiForgeryToken()

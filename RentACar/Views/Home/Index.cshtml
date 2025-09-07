@@ -154,7 +154,6 @@
     </section>
 
     <!-- FAQ Section -->
-    <!-- FAQ Section -->
     <section id="section-faq">
         <div class="container">
             <div class="row">
@@ -237,6 +236,53 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.7.0/nouislider.min.css" rel="stylesheet" />
     <script>
-        // Burada sənin favoritlər, filter və pagination scriptləri qalır
+                   document.addEventListener("DOMContentLoaded", function () {
+            const favoritesKey = "favoriteCars";
+            let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+
+            // Heart rəngini yeniləyən funksiya
+            function updateCarHearts() {
+                document.querySelectorAll(".favorite-icon").forEach(icon => {
+                    const card = icon.closest(".car-card");
+                    const carId = parseInt(card.dataset.carId);
+                    if (favorites.find(f => f.id === carId)) {
+                        icon.classList.add("active");
+                        icon.style.color = "red";
+                    } else {
+                        icon.classList.remove("active");
+                        icon.style.color = "grey";
+                    }
+                });
+            }
+
+            // Toggle favorite funksiyası
+            function toggleFavorite(carId, name, image) {
+                const existing = favorites.find(f => f.id === carId);
+                if (existing) {
+                    favorites = favorites.filter(f => f.id !== carId);
+                } else {
+                    favorites.push({ id: carId, name: name, image: image || "placeholder.jpg" });
+                }
+                localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+                updateCarHearts();
+            }
+
+            // Event listener əlavə et
+            document.body.addEventListener("click", function (e) {
+                if (e.target.classList.contains("favorite-icon")) {
+                    const icon = e.target;
+                    const card = icon.closest(".car-card");
+                    const carId = parseInt(card.dataset.carId);
+                    const name = card.dataset.carName;
+                    const image = card.dataset.carImage;
+                    toggleFavorite(carId, name, image);
+                }
+            });
+
+            // İlk yükləmədə heart rəngini yenilə
+            updateCarHearts();
+        });
+
+
     </script>
 }

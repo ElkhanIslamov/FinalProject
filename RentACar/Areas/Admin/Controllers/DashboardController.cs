@@ -1,11 +1,13 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using RentACar.DataContext;
 using RentACar.Areas.Admin.Models;
+using RentACar.DataContext;
 
 namespace RentACar.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = "Admin")]
     public class DashboardController : Controller
     {
         private readonly AppDbContext _dbContext;
@@ -20,19 +22,20 @@ namespace RentACar.Areas.Admin.Controllers
             // Ümumi maşın sayı
             var totalCars = await _dbContext.Cars.CountAsync();
 
-            // Hazırda icarədə olan maşınlar (status Active olanlar)
-            var rentedCars = await _dbContext.Bookings
-                .CountAsync(b => b.Status == "Active");
+            // Ümumi bookinglərin sayı
+            var rentedCars = await _dbContext.Bookings.CountAsync();
 
             // Bugünkü rezervasiyalar
             var todaysBookings = await _dbContext.Bookings
                 .CountAsync(b => b.PickupDate.Date == DateTime.Today);
 
-            // Ümumi gəlir (ReturnDate bitməyən və ya Completed olan rezervasiyalardan)
+            // Ümumi gəlir (icarə günləri * PricePerDay)
             var totalRevenue = await _dbContext.Bookings
-                .Where(b => b.Status == "Completed" && b.Car != null)
+                .Where(b => b.Car != null)
                 .SumAsync(b =>
-                    EF.Functions.DateDiffDay(b.PickupDate, b.ReturnDate) * b.Car.PricePerDay
+                    (EF.Functions.DateDiffDay(b.PickupDate, b.ReturnDate) <= 0 ? 1 :
+                     EF.Functions.DateDiffDay(b.PickupDate, b.ReturnDate))
+                     * b.Car.PricePerDay
                 );
 
             // Son 5 rezervasiya
@@ -47,7 +50,9 @@ namespace RentACar.Areas.Admin.Controllers
                     BookingDate = b.PickupDate,
                     ReturnDate = b.ReturnDate,
                     Price = b.Car != null
-                        ? (EF.Functions.DateDiffDay(b.PickupDate, b.ReturnDate) * b.Car.PricePerDay)
+                        ? ((EF.Functions.DateDiffDay(b.PickupDate, b.ReturnDate) <= 0 ? 1 :
+                            EF.Functions.DateDiffDay(b.PickupDate, b.ReturnDate))
+                           * b.Car.PricePerDay)
                         : 0,
                     Status = b.Status
                 })
@@ -56,13 +61,15 @@ namespace RentACar.Areas.Admin.Controllers
             var viewModel = new DashboardViewModel
             {
                 TotalCars = totalCars,
-                RentedCars = rentedCars,
+                RentedCars = rentedCars,     // bütün bookinglərin sayı
                 TodaysBookings = todaysBookings,
-                TotalRevenue = totalRevenue,
+                TotalRevenue = totalRevenue, // qiymətlərin cəmi
                 RecentBookings = recentBookings
             };
 
             return View(viewModel);
         }
+
+
     }
 }
