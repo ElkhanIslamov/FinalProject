@@ -38,34 +38,28 @@
         <div class="container">
             <div class="row g-5">
 
-                <!-- Left side: Image Carousel -->
-                <div class="col-lg-6">
-                    <div id="slider-carousel" class="owl-carousel owl-theme mb-3">
-                        <!-- Main image -->
-                        <div class="item">
-                            <a href="@Url.Content("~/images/car/" + Model.ImageUrl)?v=@cacheBuster" data-lightbox="car-gallery">
-                                <img src="@Url.Content("~/images/car/" + Model.ImageUrl)?v=@cacheBuster" class="img-fluid rounded" alt="@Model.Name" />
-                            </a>
-                        </div>
+                <!-- Left side: Image Gallery -->
+                <div class="col-lg-6 text-center">
+                    <!-- Main image -->
+                    <a href="~/images/car/@Model.ImageUrl?v=@cacheBuster" data-lightbox="car-gallery">
+                        <img src="~/images/car/@Model.ImageUrl?v=@cacheBuster" class="img-fluid rounded mb-3" alt="@Model.Name" style="max-height:400px; object-fit:cover;" />
+                    </a>
 
-                        <!-- Additional images -->
-                        @if (Model.AdditionalImageUrls != null && Model.AdditionalImageUrls.Any())
-                        {
-                            int index = 2; // Main image artıq 1-ci şəkildir
-                            foreach (var img in Model.AdditionalImageUrls)
+                    <!-- Thumbnails row -->
+                    @if (Model.AdditionalImageUrls != null && Model.AdditionalImageUrls.Any())
+                    {
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            @foreach (var img in Model.AdditionalImageUrls)
                             {
                                 var safeImg = string.IsNullOrEmpty(img) ? "placeholder.jpg" : img;
-                                var altText = string.IsNullOrEmpty(img) ? $"Şəkil {index}" : Model.Name;
-                                <div class="item">
-                                    <a href="@Url.Content("~/images/car/" + safeImg)?v=@cacheBuster" data-lightbox="car-gallery">
-                                        <img src="@Url.Content("~/images/car/" + safeImg)?v=@cacheBuster"
-                                             class="img-fluid rounded" alt="@altText" />
-                                    </a>
-                                </div>
-                                index++;
+                                <a href="~/images/car/@safeImg?v=@cacheBuster" data-lightbox="car-gallery">
+                                    <img src="~/images/car/@safeImg?v=@cacheBuster"
+                                         class="img-thumbnail"
+                                         style="width:80px; height:60px; object-fit:cover;" />
+                                </a>
                             }
-                        }
-                    </div>
+                        </div>
+                    }
                 </div>
 
                 <!-- Middle: Description and specs -->
@@ -144,21 +138,12 @@
 
 <a href="#" id="back-to-top"></a>
 
-<!-- Owl Carousel and Lightbox scripts -->
+<!-- Lightbox scripts -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lightbox2/2.11.3/js/lightbox.min.js"></script>
 
 <script>
     $(document).ready(function () {
-        $('#slider-carousel').owlCarousel({
-            items: 1,
-            loop: true,
-            margin: 10,
-            nav: true,
-            dots: true
-        });
-
         lightbox.option({
             resizeDuration: 200,
             wrapAround: true,

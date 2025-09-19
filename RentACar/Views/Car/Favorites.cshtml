@@ -128,6 +128,7 @@
                 const container = $("#favorites-container");
                 let favorites = getFavorites();
 
+                // lazımsız və ya boş obyektləri təmizləyirik
                 favorites = favorites.filter(f => f.id && f.name && f.image);
                 saveFavorites(favorites);
 
@@ -159,19 +160,22 @@
                 });
             }
 
+            // Tək çıxarma
             $(document).on("click", ".remove-favorite", function () {
-                const id = parseInt($(this).data("id"));
+                const id = $(this).data("id").toString(); // string kimi götür
                 let favorites = getFavorites();
-                favorites = favorites.filter(f => f.id !== id);
+                favorites = favorites.filter(f => f.id.toString() !== id);
                 saveFavorites(favorites);
                 renderFavoritesPage();
             });
 
+            // Hamısını təmizlə
             $("#clear-favorites").on("click", function () {
                 localStorage.removeItem(favoritesKey);
                 renderFavoritesPage();
             });
 
+            // İlk render
             renderFavoritesPage();
         });
     </script>
