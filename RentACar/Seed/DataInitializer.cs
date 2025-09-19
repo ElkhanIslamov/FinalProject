@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using RentACar.DataContext;
 using RentACar.DataContext.Entities;
 
 namespace RentACar.Seed
@@ -9,6 +11,8 @@ namespace RentACar.Seed
         {
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
             var userManager = serviceProvider.GetRequiredService<UserManager<AppUser>>();
+            var appDbContext = serviceProvider.GetRequiredService<AppDbContext>();
+            await appDbContext.Database.MigrateAsync();
 
             string[] roleNames = { "Admin", "Moderator", "Customer" };
 

@@ -9,22 +9,24 @@
                     <div class="col-lg-6 offset-lg-4">
                         <div class="padding40 rounded-3 shadow-soft" data-bgcolor="#ffffff">
                             <h4>Login</h4>
-                            @* ✅ Show email error from TempData if exists *@
+                            @* ✅ Show email error from TempData if exists 
                             @if (TempData["EmailError"] != null)
                             {
                                 <div class="alert alert-warning" role="alert">
                                     @TempData["EmailError"]
                                 </div>
-                            }
+                            }*@
                             <div class="spacer-10"></div>
-                            @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                           @*  @Html.ValidationSummary(false, "", new { @class = "text-danger" }) *@
                             <form id="form_register" class="form-border" method="post">
                                 <div class="field-set">
+                                    <span asp-validation-for="UserName"  class="text-danger"></span>
                                     <input asp-for="UserName" class="form-control" placeholder="User Name" />
                                 </div>
                                 <div class="field-set">
+                                    <span asp-validation-for="Password"  class="text-danger"></span>
                                     <input asp-for="Password" type="password" class="form-control" placeholder="Password" />
-                                </div>
+								  </div>
                                 <label class="py-3 d-flex flex-wrap justify-content-between">
                                     <div class="form-check">
                                         <input asp-for="RememberMe" class="form-check-input custom-checkbox-bold" />
@@ -36,8 +38,9 @@
                                         <a asp-controller="account" asp-action="forgotpassword" class="text-primary  fw-bold">Forgot Password?</a>
                                     </div>
                                 </label>
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                                 <div>
-                                    <button type="submit" class="btn btn-dark btn-lg rounded-1">Sign in</button>
+                                    <button type="submit" class="btn btn-dark btn-lg rounded-1">Log in</button>
                                 </div>
                             </form>
                             <div class="title-line">Or&nbsp;sign&nbsp;up&nbsp</div>

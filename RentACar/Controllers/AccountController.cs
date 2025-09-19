@@ -22,7 +22,7 @@ public class AccountController : Controller
     
 
 
-    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMailService mailService, AppDbContext context = null)
+    public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager, IMailService mailService, AppDbContext context)
     {
         _userManager = userManager;
         _signInManager = signInManager;
@@ -241,15 +241,6 @@ public class AccountController : Controller
 
         return RedirectToAction(nameof(Login));
     }
-
-    // [HttpPost]
-    //[ValidateAntiForgeryToken]
-    //public async Task<IActionResult> Logout()
-    //{
-    //    await _signInManager.SignOutAsync();
-    //    return RedirectToAction("Login", "Account");
-    //}
-
     public IActionResult AccessDenied()
     {
         return View();

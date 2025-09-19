@@ -48,7 +48,7 @@ namespace RentACar.Controllers
         public async Task<IActionResult> QuickBooking(BookingViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+             return View(model);
 
             var user = await _userManager.GetUserAsync(User);
             if (user == null)

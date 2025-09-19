@@ -78,20 +78,21 @@
                     <!-- Right Side -->
                     <div class="de-flex-col">
                         <div class="menu_side_area">
-                            @if (User.Identity.IsAuthenticated)
+                             @if (User.Identity.IsAuthenticated)
                             {
+                                <span style="color:white", bold>@User.Identity.Name</span>
                                 <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
                                     @Html.AntiForgeryToken()
                                     <button type="submit" class="btn-main border-0 bg-transparent text-white" style="background:green">
-                                        Log out
+                                      Log out
                                     </button>
                                 </form>
                             }
                             else
                             {
-                                <a asp-controller="account" asp-action="login" class="btn-main">Sign in</a>
+                                <a asp-controller="account" asp-action="login" class="btn-main">Log in</a>
                             }
-                        </div>
+                         </div>
                     </div>
                 </div>
             </div>

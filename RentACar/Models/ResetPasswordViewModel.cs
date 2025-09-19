@@ -7,7 +7,7 @@ namespace RentACar.Models
         [DataType(DataType.Password)]
         public required string NewPassword { get; set; }
         [DataType(DataType.Password)]
-        [Compare("NewPassword", ErrorMessage = "Passwords do not match.")]
+        [Compare("NewPassword", ErrorMessage = "Password uyğun deyil!")]
         public required string ConfirmPassword { get; set; }
         public required string ResetToken { get; set; }
         public required string Email { get; set; }

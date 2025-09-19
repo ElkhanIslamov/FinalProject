@@ -525,7 +525,6 @@ C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\scopedcss\projectbundle
 C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\staticwebassets.development.json
 C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\staticwebassets.build.endpoints.json
-C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt
 C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\RentACar.csproj.Up2Date
 C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\RentACar.dll
 C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\refint\RentACar.dll
@@ -1367,3 +1366,4 @@ C:\Users\User\Desktop\Новая папка\RentACar\RentACar\obj\Debug\net8.0\R
 C:\Users\User\Desktop\Новая папка\RentACar\RentACar\obj\Debug\net8.0\ref\RentACar.dll
 C:\Users\User\Desktop\Новая папка\RentACar\RentACar\bin\Debug\net8.0\Stripe.net.dll
 C:\Users\User\Desktop\RentACar\RentACar\bin\Debug\net8.0\Stripe.net.dll
+C:\Users\User\Desktop\RentACar\RentACar\obj\Debug\net8.0\staticwebassets.upToDateCheck.txt

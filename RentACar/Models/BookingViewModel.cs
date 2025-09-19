@@ -11,32 +11,32 @@ namespace RentACar.Models
         public int? CarId { get; set; }
         public string CarType { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Your name is required.")]
+        [Required(ErrorMessage = "Ad əlavə edin!")]
         public string CustomerName { get; set; } = null!;
 
-        [Required(ErrorMessage = "Email is required.")]
-        [EmailAddress(ErrorMessage = "Invalid email address.")]
+        [Required(ErrorMessage = "Email əlavə edin!")]
+        [EmailAddress(ErrorMessage = "Email ünvanı düzgün yazın!")]
         public string Email { get; set; } = null!;
 
-        [Required(ErrorMessage = "Phone number is required.")]
+        [Required(ErrorMessage = "Mobil nömrə əlavə edin!")]
         public string Phone { get; set; } = null!;
 
-        [Required(ErrorMessage = "Pickup location is required.")]
+        [Required(ErrorMessage = "Götürmə ünvanı qeyd edin!")]
         public string PickupLocation { get; set; } = null!;
 
-        [Required(ErrorMessage = "Dropoff location is required.")]
+        [Required(ErrorMessage = "Geri qaytarma ünvanı qeyd edin!")]
         public string DropoffLocation { get; set; } = null!;
 
-        [Required(ErrorMessage = "Pickup date is required.")]
+        [Required(ErrorMessage = "Götürmə gününü qeyd edin!")]
         public DateTime PickupDate { get; set; } = DateTime.UtcNow;
 
-        [Required(ErrorMessage = "Pickup time is required.")]
+        [Required(ErrorMessage = "Götürmə saatını qeyd edin!")]
         public string PickupTime { get; set; } = "09:00";
 
-        [Required(ErrorMessage = "Return date is required.")]
+        [Required(ErrorMessage = "Geri qaytarma gününü qeyd edin!")]
         public DateTime ReturnDate { get; set; } = DateTime.UtcNow.AddDays(1);
 
-        [Required(ErrorMessage = "Return time is required.")]
+        [Required(ErrorMessage = "Geri qaytarma saatını qeyd edin!")]
         public string ReturnTime { get; set; } = "09:00";
 
         public string? Message { get; set; }
@@ -46,7 +46,7 @@ namespace RentACar.Models
             if (!TimeSpan.TryParse(PickupTime, out var pickupTimeSpan) ||
                 !TimeSpan.TryParse(ReturnTime, out var returnTimeSpan))
             {
-                yield return new ValidationResult("Invalid time format.");
+                yield return new ValidationResult("Zaman intervalını düzgün seçin!");
                 yield break;
             }
 
@@ -55,13 +55,13 @@ namespace RentACar.Models
 
             if (returnDateTime <= pickupDateTime)
             {
-                yield return new ValidationResult("Return date and time must be after pickup date and time.",
+                yield return new ValidationResult("Qaytarma tarixi və vaxtı götürmə tarixi və vaxtından sonra olmalıdır.",
                     new[] { nameof(ReturnDate), nameof(ReturnTime) });
             }
 
             if ((returnDateTime - pickupDateTime).TotalHours < 24)
             {
-                yield return new ValidationResult("Booking duration must be at least 1 full day.",
+                yield return new ValidationResult("Rezervasiya müddəti ən azı 1 tam gün olmalıdır.",
                     new[] { nameof(PickupDate), nameof(ReturnDate) });
             }
         }

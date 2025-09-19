@@ -1,9 +1,14 @@
-﻿namespace RentACar.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace RentACar.Models
 {
     public class LoginViewModel
     {
-        public required string UserName { get; set; }
-        public required string Password { get; set; }
+        [Required( ErrorMessage = "Ad daxil edin")]
+        public  string UserName { get; set; } = null!;   
+        [Required( ErrorMessage = "Parol daxil edin")]
+        [DataType(DataType.Password)]
+        public  string Password { get; set; }= null!;
         public bool RememberMe { get; set; }
         public string? ReturnUrl { get; set; }
     }

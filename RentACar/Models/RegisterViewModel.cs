@@ -9,10 +9,10 @@ namespace RentACar.Models
         [DataType(DataType.EmailAddress)]
         public required string Email { get; set; }
         [DataType(DataType.Password)]
-        [MinLength(4, ErrorMessage = "Password must be at least 4 characters long.")]
+        [MinLength(4, ErrorMessage = "Parol ən azı 4 simvol uzunluğunda olmalıdır.")]
         public required string Password { get; set; }
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Passwords do not match.")]
+        [Compare("Password", ErrorMessage = "Password uyğun gəlmir")]
         public required string ConfirmPassword { get; set; }
     }
 }

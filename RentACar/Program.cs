@@ -1,4 +1,4 @@
-using Mailing;
+﻿using Mailing;
 using Mailing.MailKitImplementations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +18,8 @@ namespace RentACar
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddControllersWithViews();
+
             builder.Services.AddSession();
 
             builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
@@ -38,6 +38,7 @@ namespace RentACar
                 options.SignIn.RequireConfirmedEmail = true;
 
             }).AddEntityFrameworkStores<AppDbContext>().AddDefaultTokenProviders();
+
 
             builder.Services.AddDbContext<AppDbContext>(options =>
             {
