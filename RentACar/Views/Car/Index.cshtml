@@ -187,8 +187,171 @@
         border-radius: 3px;
     }
 </style>
-
 @section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const favoritesKey = "favoriteCars";
+            let favorites = JSON.parse(localStorage.getItem(favoritesKey)) || [];
+
+            const favoritesMenu = document.getElementById("favorites-menu-list");
+            const favoritesToggle = document.getElementById("favorites-toggle");
+
+            // --- FAVORITES LOGIC ---
+            function renderFavoritesDropdown() {
+                if (!favoritesMenu) return;
+
+                favoritesMenu.innerHTML = "";
+                if (favorites.length === 0) {
+                    favoritesMenu.innerHTML = "<li>Seçilmiş yoxdur</li>";
+                    return;
+                }
+
+                favorites.forEach(car => {
+                    favoritesMenu.insertAdjacentHTML("beforeend", `
+                        <li>
+                            <a href="/Car/Details/${car.id}" style="display:flex;align-items:center;gap:5px;text-decoration:none;color:inherit;">
+                                <img src="/images/car/${car.image}" alt="${car.name}" style="width:50px;height:30px;object-fit:cover;" />
+                                <span>${car.name}</span>
+                            </a>
+                            <span class="remove-favorite" data-id="${car.id}" style="margin-left:auto;cursor:pointer;color:red;">&times;</span>
+                        </li>
+                    `);
+                });
+            }
+
+            function updateCarHearts() {
+                document.querySelectorAll(".favorite-icon").forEach(icon => {
+                    const carId = parseInt(icon.getAttribute("data-id"));
+                    if (favorites.find(f => f.id === carId)) {
+                        icon.classList.add("active");
+                    } else {
+                        icon.classList.remove("active");
+                    }
+                });
+            }
+
+            // --- CLICK EVENTS HANDLER ---
+            document.addEventListener("click", function(e) {
+                // Ürəyə klik
+                if (e.target.classList.contains("favorite-icon")) {
+                    e.preventDefault();
+                    const icon = e.target;
+                    const card = icon.closest(".car-card");
+                    const carId = parseInt(icon.getAttribute("data-id"));
+                    const name = card.getAttribute("data-car-name");
+                    const image = card.getAttribute("data-car-image");
+
+                    const existing = favorites.find(f => f.id === carId);
+                    if (existing) {
+                        favorites = favorites.filter(f => f.id !== carId);
+                    } else {
+                        favorites.push({ id: carId, name: name, image: image });
+                    }
+                    localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+
+                    updateCarHearts();       // dərhal rəng dəyişir
+                    renderFavoritesDropdown(); // menyunu yenilə
+                }
+
+                // Remove-favorite klik
+                if (e.target.classList.contains("remove-favorite")) {
+                    e.stopPropagation();
+                    const id = parseInt(e.target.getAttribute("data-id"));
+                    favorites = favorites.filter(f => f.id !== id);
+                    localStorage.setItem(favoritesKey, JSON.stringify(favorites));
+
+                    updateCarHearts();       // dərhal ürək əvvəlki vəziyyətinə qayıdır
+                    renderFavoritesDropdown(); // menyunu yenilə
+                }
+
+                // Dropdown açılıb-bağlanması
+                if (favoritesToggle && favoritesMenu) {
+                    if (e.target === favoritesToggle) {
+                        e.preventDefault();
+                        favoritesMenu.style.display = (favoritesMenu.style.display === "block") ? "none" : "block";
+                    } else if (!favoritesMenu.contains(e.target) && e.target !== favoritesToggle) {
+                        favoritesMenu.style.display = "none";
+                    }
+                }
+            });
+
+            renderFavoritesDropdown();
+            updateCarHearts();
+
+            // --- FILTER + PAGINATION LOGIC ---
+            function filterCars() {
+                var search = $("#search-input").val().toLowerCase();
+                var selectedCategories = $(".category-filter:checked").map(function () { return $(this).val(); }).get();
+                var minPrice = parseFloat($("#minPrice").val()) || 0;
+                var maxPrice = parseFloat($("#maxPrice").val()) || Number.MAX_VALUE;
+
+                $("#car-list .car-parent").each(function () {
+                    var card = $(this).find(".car-card");
+                    var name = card.data("car-name").toLowerCase();
+                    var categoryId = card.data("category-id").toString();
+                    var price = parseFloat(card.data("price"));
+
+                    var matchSearch = search === "" || name.includes(search);
+                    var matchCategory = selectedCategories.length === 0 || selectedCategories.includes(categoryId);
+                    var matchPrice = price >= minPrice && price <= maxPrice;
+
+                    if (matchSearch && matchCategory && matchPrice) $(this).addClass("filtered").show();
+                    else $(this).removeClass("filtered").hide();
+                });
+
+                applyPagination();
+            }
+
+            var carsPerPage = 6;
+            var currentPage = 1;
+
+            function applyPagination() {
+                var cars = $("#car-list .car-parent.filtered");
+                if (cars.length === 0) cars = $("#car-list .car-parent");
+
+                var totalPages = Math.ceil(cars.length / carsPerPage);
+                if (currentPage > totalPages) currentPage = totalPages || 1;
+
+                var start = (currentPage - 1) * carsPerPage;
+                var end = start + carsPerPage;
+
+                cars.hide().slice(start, end).show();
+
+                var scrollDiv = $("#pagination-scroll").empty();
+                for (var i = 1; i <= totalPages; i++) {
+                    var btn = $("<div class='page-scroll-btn'>" + i + "</div>");
+                    if (i === currentPage) btn.addClass("active");
+                    btn.on("click", (function (page) { return function () { currentPage = page; applyPagination(); }; })(i));
+                    scrollDiv.append(btn);
+                }
+            }
+
+            $("#pagination-prev").on("click", function () {
+                if (currentPage > 1) { currentPage--; applyPagination(); }
+            });
+
+            $("#pagination-next").on("click", function () {
+                var cars = $("#car-list .car-parent.filtered");
+                if (cars.length === 0) cars = $("#car-list .car-parent");
+                var totalPages = Math.ceil(cars.length / carsPerPage);
+                if (currentPage < totalPages) { currentPage++; applyPagination(); }
+            });
+
+            $(document).ready(function () {
+                $("#car-list .car-parent").addClass("filtered");
+                applyPagination();
+            });
+
+            $("#search-input").on("input", filterCars);
+            $(".category-filter").on("change", filterCars);
+            $("#minPrice, #maxPrice").on("input", filterCars);
+        });
+    </script>
+}
+
+
+
+@* @section Scripts {
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const favoritesKey = "favoriteCars";
@@ -353,5 +516,5 @@
         });
     </script>
 }
-
+ *@
 }
